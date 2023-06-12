@@ -23,7 +23,7 @@ export const appMenu = [
         to: "/exercises",
       },
       {
-        label: "Equiments",
+        label: "Equipments",
         icon: "pi pi-fw pi-home",
         to: "/equipments",
       },
