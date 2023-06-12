@@ -1,3 +1,4 @@
+import './bootstrap';
 import './assets/styles/main.css';
 
 import { createApp } from 'vue';
