@@ -25,7 +25,7 @@ const router = createRouter({
       beforeEnter: auth,
       children: [
         {
-          path: '/',
+          path: '/dashboard',
           name: 'dashboard',
           component: () => import('@/views/DashboardView.vue')
         },
@@ -39,6 +39,27 @@ const router = createRouter({
           name: 'equipment',
           component: () => import('@/views/equipment/IndexView.vue')
         },
+        //==============exercise================
+        {
+          path: '/exercises',
+          name: 'exercise.index',
+          component: () => import('@/views/exercise/IndexView.vue')
+        },
+        {
+          path: '/exercises/create',
+          name: 'exercise.create',
+          component: () => import('@/views/exercise/CreateView.vue')
+        },
+        {
+          path: '/exercises/:id/edit',
+          name: 'exercise.edit',
+          component: () => import('@/views/exercise/EditView.vue')
+        },
+        {
+          path: '/exercises/:id',
+          name: 'exercise.show',
+          component: () => import('@/views/exercise/DetailView.vue')
+        }
       ]
     },
     {
