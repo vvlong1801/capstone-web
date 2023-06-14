@@ -5,11 +5,9 @@ export function useFile() {
   const file = ref(null);
   const toast = useToast();
 
-  const upload = async (event, collection, type) => {
+  const upload = async (event) => {
     const formData = new FormData();
     formData.append("file", event.files[0]);
-    formData.append("collection", collection);
-    formData.append("type", type);
 
     try {
       const res = await window.axios.post("upload", formData, {
@@ -18,7 +16,7 @@ export function useFile() {
         },
       });
 
-      file.value = res.data.data || res.data;
+      file.value =  res.data;
 
       toast.add({
         severity: "success",

@@ -1,20 +1,27 @@
 <!-- eslint-disable vue/valid-v-on -->
+<script setup>
+import { defineProps } from 'vue';
+defineProps(['showSideBar']);
+</script>
 <template>
   <div class="layout-topbar">
     <router-link to="/" class="layout-topbar-logo">
       <span>CHALLENGE ME</span>
     </router-link>
 
-    <button class="text-left layout-topbar-button">
+    <button
+      class="text-left layout-topbar-button"
+      @click="$emit('update:showSideBar', !showSideBar)"
+    >
       <i class="pi pi-bars"></i>
     </button>
 
     <button class="hidden layout-topbar-button">
-      <i class="pi pi-ellipsis-v "></i>
+      <i class="pi pi-ellipsis-v"></i>
     </button>
 
     <div class="ml-auto p-0">
-      <button @click="">
+      <!-- <button @click="">
         <i class="pi pi-calendar"></i>
         <span>Calendar</span>
       </button>
@@ -25,7 +32,7 @@
       <button @click="">
         <i class="pi pi-cog"></i>
         <span>Settings</span>
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
