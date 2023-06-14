@@ -6,7 +6,7 @@
         @apply !bg-zinc-100;
     }
     .layout-topbar {
-        @apply fixed z-50 h-20 left-0 top-0 w-full px-8 py-0 transition duration-200 items-center flex shadow-lg bg-white;
+        @apply fixed z-50 h-20 left-0 top-0 w-full px-8 py-0 transition duration-200 items-center flex drop-shadow-md bg-white;
     }
 
     .layout-topbar-logo {

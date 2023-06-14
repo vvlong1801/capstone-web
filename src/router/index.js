@@ -59,6 +59,27 @@ const router = createRouter({
           path: '/exercises/:id',
           name: 'exercise.show',
           component: () => import('@/views/exercise/DetailView.vue')
+        },
+        //==============challenge================
+        {
+          path: '/challenges',
+          name: 'challenges.index',
+          component: () => import('@/views/challenge/IndexView.vue')
+        },
+        {
+          path: '/challenges/create',
+          name: 'challenges.create',
+          component: () => import('@/views/challenge/CreateView.vue')
+        },
+        {
+          path: '/challenges/:id/edit',
+          name: 'challenges.edit',
+          component: () => import('@/views/challenge/EditView.vue')
+        },
+        {
+          path: '/challenges/:id',
+          name: 'challenges.show',
+          component: () => import('@/views/challenge/DetailView.vue')
         }
       ]
     },

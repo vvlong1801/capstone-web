@@ -62,6 +62,10 @@ export function registerGlobalComponents(app) {
     'Card',
     defineAsyncComponent(() => import('primevue/card'))
   );
+  // app.component(
+  //   'Panel',
+  //   defineAsyncComponent(() => import('primevue/panel'))
+  // );
   app.component(
     'Divider',
     defineAsyncComponent(() => import('primevue/divider'))
@@ -86,5 +90,9 @@ export function registerGlobalComponents(app) {
   app.component(
     'Tag',
     defineAsyncComponent(() => import('primevue/tag'))
+  );
+  app.component(
+    'Chip',
+    defineAsyncComponent(() => import('primevue/chip'))
   );
 }
