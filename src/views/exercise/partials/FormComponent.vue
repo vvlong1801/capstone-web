@@ -52,7 +52,7 @@ const searchGroupTag = (event) => {
       if (filtered.length) {
         filteredGroupTags.value = [...filtered];
       } else {
-        filteredGroupTags.value = [{ name: event.query }];
+        filteredGroupTags.value = [{ id: null, name: event.query }];
       }
     }
   }, 250);
@@ -60,7 +60,6 @@ const searchGroupTag = (event) => {
 </script>
 <template>
   <div class="flex flex-col gap-6">
-    <Toast />
     <div class="card p-8 flex gap-8 w-full">
       <div class="grid grid-cols-2 auto-rows-max gap-6 w-1/2">
         <div class="col-span-2">
@@ -99,7 +98,7 @@ const searchGroupTag = (event) => {
 
         <div class="col-span-2">
           <SelectButton
-            v-model="exerciseStore.form.values.evaluate_method"
+            v-model="exerciseStore.form.values.requirement_unit"
             :options="EVALUATE_METHOD"
             optionValue="value"
             aria-labelledby="multiple"
@@ -112,8 +111,25 @@ const searchGroupTag = (event) => {
               </div>
             </template>
           </SelectButton>
-          <small class="p-error" id="text-error" v-if="checkValidate('level')">
-            {{ exerciseStore.form.errors.type || '&nbsp;' }}
+          <small class="p-error" id="text-error" v-if="checkValidate('requirement_unit')">
+            {{ exerciseStore.form.errors.requirement_unit || '&nbsp;' }}
+          </small>
+        </div>
+        <div class="col-span-2">
+          <div class="p-inputgroup flex-1">
+            <div class="p-float-label">
+              <InputText
+                id="requirement_initial"
+                v-model.number="exerciseStore.form.values.requirement_initial"
+                class="w-full"
+                inputId="requirement_initial"
+              />
+              <label for="requirement_initial">Init Value For Type</label>
+            </div>
+            <span class="p-inputgroup-addon">{{ exerciseStore.form.values.requirement_unit }}</span>
+          </div>
+          <small class="p-error" id="text-error" v-if="checkValidate('requirement_initial')">
+            {{ exerciseStore.form.errors.requirement_initial || '&nbsp;' }}
           </small>
         </div>
         <div class="flex-col">
@@ -200,7 +216,7 @@ const searchGroupTag = (event) => {
           <FileUpload
             name="gif"
             accept="image/*"
-            :maxFileSize="1000000"
+            :maxFileSize="3000000"
             @uploader="onUpload($event, 'gif')"
             auto
             custom-upload
@@ -238,7 +254,7 @@ const searchGroupTag = (event) => {
             custom-upload
             class="!w-1/2 !flex-auto"
           >
-            <template #header="{ chooseCallback}">
+            <template #header="{ chooseCallback }">
               <div class="flex space-x-4 items-center justify-between w-full">
                 <Button @click="chooseCallback" icon="pi pi-cloud-upload" />
                 <Badge :value="exerciseStore.form.values.image?.filename ?? 'image'" class="p-2" />
@@ -260,19 +276,24 @@ const searchGroupTag = (event) => {
             exerciseStore.form.errors.image || '&nbsp;'
           }}</small>
         </div>
-        <div class="p-inputgroup col-span-2">
-          <span class="p-inputgroup-addon">
-            <i class="pi pi-link"></i>
-          </span>
-          <div class="p-float-label">
-            <InputText
-              class="w-full"
-              placeholder="enter video url"
-              v-model="exerciseStore.form.values.video"
-              inputId="video"
-            />
-            <label for="video">Video</label>
+        <div class="col-span-2">
+          <div class="p-inputgroup">
+            <div class="p-float-label">
+              <InputText
+                class="w-full"
+                placeholder="enter video url"
+                v-model="exerciseStore.form.values.youtube_url"
+                inputId="video"
+              />
+              <label for="video">Youtube url</label>
+            </div>
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-youtube"></i>
+            </span>
           </div>
+          <small class="p-error" id="text-error" v-if="checkValidate('youtube_url')">{{
+            exerciseStore.form.errors.youtube_url || '&nbsp;'
+          }}</small>
         </div>
       </div>
       <div class="flex flex-col w-1/2 gap-6">

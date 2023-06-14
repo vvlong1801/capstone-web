@@ -1,6 +1,6 @@
 @layer components {
     .layout-sidebar {
-        @apply fixed bg-white w-80 h-[calc(100vh_-_9rem)] z-50 overflow-y-auto drop-shadow-lg px-6 py-2 rounded-xl left-8 top-28 border;
+        @apply fixed bg-white w-80 h-[calc(100vh_-_9rem)] z-50 overflow-y-auto shadow-sm px-6 py-2 rounded-xl left-8 top-28 border;
     }
 
     .app-menu_item-root_text {

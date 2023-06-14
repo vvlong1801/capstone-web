@@ -5,7 +5,7 @@ import { appMenu } from '@/configs/menu.js';
 const model = ref(appMenu);
 </script>
 <template>
-  <ul class="layout-menu">
+  <ul class="layout-menu pt-10 pl-6">
     <template v-for="(item, i) in model" :key="item">
       <app-menu-item v-if="!item.separator" :item="item" :index="i"></app-menu-item>
       <li v-if="item.separator" class="menu-separator"></li>

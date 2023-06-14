@@ -20,24 +20,30 @@ export const useExerciseStore = defineStore('exercise', () => {
   const validationSchema = Yup.object({
     name: Yup.string().required(),
     level: Yup.string().required(),
-    evaluate_method: Yup.string().required(),
+    requirement_unit: Yup.string().required(),
+    requirement_initial: Yup.string().required(),
     group_tags: Yup.array(),
     muscles: Yup.array().required(),
     image: Yup.object().required(),
-    gif: Yup.object().required()
+    gif: Yup.object().required(),
+    youtube_url: Yup.string().matches(/^(https?:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/, {
+      message: 'link format must be youtube',
+      excludeEmptyString: true
+    })
   });
 
   const initialValues = {
     name: '',
     level: TYPE_LEVEL[0].value,
     type: null,
-    evaluate_method: EVALUATE_METHOD[0].value,
+    requirement_unit: EVALUATE_METHOD[0].value,
+    requirement_initial: '',
     group_tags: null,
     equipment: null,
     description: '',
     muscles: null,
     gif: null,
-    video: null,
+    youtube_url: "",
     image: null
   };
 
@@ -61,13 +67,13 @@ export const useExerciseStore = defineStore('exercise', () => {
   const convertResToData = (res) => {
     if (res instanceof Array) {
       const result = res.map((item) => {
-        item.evaluate_method = getOption(EVALUATE_METHOD, item.evaluate_method);
+        item.requirement_unit = getOption(EVALUATE_METHOD, item.requirement_unit);
         item.level = getOption(TYPE_LEVEL, item.level);
         return item;
       });
       return result;
     } else {
-      res.type = getOption(EVALUATE_METHOD, res.type);
+      res.requirement_unit = getOption(EVALUATE_METHOD, res.requirement_unit);
       res.level = getOption(TYPE_LEVEL, res.level);
       return res;
     }
@@ -103,8 +109,9 @@ export const useExerciseStore = defineStore('exercise', () => {
 
   const createExercise = form.handleSubmit(async (values, { resetForm }) => {
     values.muscles = values.muscles.map((item) => item.id);
-    values.equipment = values.equipment.id;
+    values.equipment = values.equipment?.id ?? null;
 
+    console.log(values);
     await window.axios
       .post('exercises', values)
       .then((res) => {

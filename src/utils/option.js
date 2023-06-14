@@ -1,17 +1,17 @@
 const EVALUATE_METHOD = [
   {
-    label: 'Repitition',
-    value: 'repitition',
+    label: 'Count Rep',
+    value: 'reps',
     icon: 'pi-bolt'
   },
   {
-    label: 'Time',
-    value: 'timeBased',
+    label: 'Count Time',
+    value: 'times',
     icon: 'pi-clock'
   },
   {
     label: 'Distance',
-    value: 'distanceBased',
+    value: 'meters',
     icon: 'pi-arrows-h'
   }
 ];

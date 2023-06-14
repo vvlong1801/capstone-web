@@ -37,8 +37,8 @@ const checkActiveItem = (item) => {
       class="app-menu_item-item"
       :class="{ 'menu_item-active': checkActiveItem(item) }"
     >
-      <i :class="item.icon"></i>
-      <span>{{ item.label }}</span>
+      <i :class="item.icon" class="!text-xl"></i>
+      <span class="!text-lg">{{ item.label }}</span>
       <i
         class="pi pi-fw pi-angle-down layout-submenu-toggler"
         v-if="item.items"
@@ -54,7 +54,6 @@ const checkActiveItem = (item) => {
           :key="child"
           :index="i"
           :item="child"
-
           :root="false"
         ></app-menu-item>
       </ul>
