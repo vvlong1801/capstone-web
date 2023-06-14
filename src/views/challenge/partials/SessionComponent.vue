@@ -3,7 +3,7 @@ import { defineProps, ref } from 'vue';
 import SessionDialog from './SessionDialog.vue';
 defineProps(['day']);
 
-const openDialog = ref(true);
+const openDialog = ref(false);
 </script>
 <template>
   <div class="flex-col space-y-2">

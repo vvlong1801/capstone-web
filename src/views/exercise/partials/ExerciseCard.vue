@@ -9,20 +9,22 @@ defineProps(['exercise']);
     <div class="content w-full py-1 flex flex-col justify-between">
       <div class="flex justify-between items-center">
         <p class="font-bold text-lg">{{ exercise.name }}</p>
-        <div class="space-x-2">
-          <i
-            class="pi pi-pencil cursor-pointer"
-            @click="
-              $router.push({
-                name: 'exercise.edit',
-                params: {
-                  id: exercise.id
-                }
-              })
-            "
-          ></i>
-          <i class="pi pi-trash cursor-pointer" @click="$emit('clickDelete', exercise.id)"></i>
-        </div>
+        <slot name="action">
+          <div class="space-x-2">
+            <i
+              class="pi pi-pencil cursor-pointer"
+              @click="
+                $router.push({
+                  name: 'exercise.edit',
+                  params: {
+                    id: exercise.id
+                  }
+                })
+              "
+            ></i>
+            <i class="pi pi-trash cursor-pointer" @click="$emit('clickDelete', exercise.id)"></i>
+          </div>
+        </slot>
       </div>
       <div class="flex justify-between items-center">
         <Tag :severity="exercise.level.severity" :value="exercise.level.label" />
