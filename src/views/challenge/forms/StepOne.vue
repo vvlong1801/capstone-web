@@ -17,7 +17,7 @@ const stepOne = ref(null);
 const filteredChallengeTags = ref([]);
 
 const store = useChallengeStore();
-const fileService = useFile();
+var { file, upload } = useFile();
 
 onMounted(async () => {
   if (store.form.name) {
@@ -28,10 +28,19 @@ onMounted(async () => {
   await store.getChallengeTags();
 });
 
-const handleUpload = async (event) => {
-  await fileService.upload(event);
-  stepOne.value.setFieldValue('image', fileService.file.value);
-  console.log(fileService.file.value);
+const handleUpload = (event) => {
+  event.files.forEach(async (f) => {
+    await upload(f);
+    console.log(file);
+    stepOne.value.setFieldValue('images', [...stepOne.value.getValues().images, file.value]);
+  });
+};
+
+const onRemoveFile = (index) => {
+  stepOne.value.setFieldValue(
+    'images',
+    stepOne.value.getValues().images.filter((_, idx) => idx !== index)
+  );
 };
 
 const searchChallengeTag = (event) => {
@@ -64,12 +73,13 @@ const initForm = {
   max_members: 10,
   tags: [],
   invitation: [],
-  accept_all: true
+  accept_all: true,
+  images: []
 };
 const validationSchema = Yup.object({
   name: Yup.string(),
   sort_desc: Yup.string().required(),
-  description: Yup.string(),
+  description: Yup.string().required(),
   start_at: Yup.date().default(new Date()),
   finish_at: Yup.date().default(new Date()),
   public: Yup.boolean(),
@@ -78,8 +88,12 @@ const validationSchema = Yup.object({
   tags: Yup.array(),
   template: Yup.object(),
   invitation: Yup.array(),
-  image: Yup.object().required(),
-  accept_all: Yup.boolean()
+  images: Yup.array().min(1).required(),
+  accept_all: Yup.boolean(),
+  youtube_url: Yup.string().matches(
+    /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})$/,
+    'link format must be youtube'
+  )
 });
 </script>
 <template>
@@ -205,7 +219,29 @@ const validationSchema = Yup.object({
           </span>
           <span class="text-xs ml-2 text-red-500" v-if="errorMessage">{{ errorMessage }}</span>
         </VeeField>
-
+        <VeeField
+          name="youtube_url"
+          v-slot="{ value, handleChange, errorMessage }"
+          as="div"
+          class="col-span-2"
+        >
+          <div class="p-inputgroup flex-1">
+            <div class="p-float-label">
+              <InputText
+                id="youtube_url"
+                class="!w-full"
+                :model-value="value"
+                @update:model-value="handleChange"
+                :class="{ 'p-invalid': errorMessage }"
+              />
+              <label for="youtube_url">Link intro challenge on youtube</label>
+            </div>
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-youtube"></i>
+            </span>
+          </div>
+          <span class="text-xs ml-2 text-red-500" v-if="errorMessage">{{ errorMessage }}</span>
+        </VeeField>
         <VeeField
           name="description"
           v-slot="{ value, handleChange, errorMessage }"
@@ -225,7 +261,7 @@ const validationSchema = Yup.object({
         </VeeField>
       </div>
       <div class="w-1/2">
-        <VeeField name="image" v-slot="{ value, handleChange, errorMessage }">
+        <VeeField name="images" v-slot="{ value, handleChange, errorMessage }">
           <FileUpload
             auto
             custom-upload
@@ -234,6 +270,7 @@ const validationSchema = Yup.object({
             @uploader="handleUpload"
             :model-value="value"
             @update:model-value="handleChange"
+            :multiple="true"
           >
             <template #header="{ chooseCallback }">
               <div class="flex flex-wrap justify-between items-center flex-1 gap-2">
@@ -243,11 +280,28 @@ const validationSchema = Yup.object({
               </div>
             </template>
             <template #content>
-              <div v-if="value" class="h-[320px] mx-4">
-                <img :alt="value.name" :src="value.url" class="h-full w-full object-cover" />
-              </div>
-              <div v-else class="h-[320px]">
-                <p>Drag and drop files to here to upload.</p>
+              <div class="grid grid-cols-2 grid-flow-row gap-6 p-2">
+                <div
+                  v-for="(file, index) in value"
+                  :key="file.filename + index"
+                  class="m-0 flex flex-col gap-3"
+                >
+                  <div class="h-40 w-full object-fill">
+                    <img
+                      role="presentation"
+                      :alt="file.filename"
+                      :src="file.url"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div class="font-semibold flex justify-between items-center w-full">
+                    <p>{{ file.filename }}</p>
+                    <i
+                      class="pi pi-times text-red-500 cursor-pointer"
+                      @click="onRemoveFile(index)"
+                    ></i>
+                  </div>
+                </div>
               </div>
             </template>
           </FileUpload>

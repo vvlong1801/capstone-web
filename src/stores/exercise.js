@@ -25,7 +25,11 @@ export const useExerciseStore = defineStore('exercise', () => {
     group_tags: Yup.array(),
     muscles: Yup.array().required(),
     image: Yup.object().required(),
-    gif: Yup.object().required()
+    gif: Yup.object().required(),
+    youtube_url: Yup.string().matches(
+      /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})$/,
+      'link format must be youtube'
+    )
   });
 
   const initialValues = {
@@ -39,7 +43,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     description: '',
     muscles: null,
     gif: null,
-    video: null,
+    youtube_url: null,
     image: null
   };
 

@@ -52,7 +52,7 @@ const searchGroupTag = (event) => {
       if (filtered.length) {
         filteredGroupTags.value = [...filtered];
       } else {
-        filteredGroupTags.value = [{ id: null, name: event.query }];  
+        filteredGroupTags.value = [{ id: null, name: event.query }];
       }
     }
   }, 250);
@@ -277,18 +277,18 @@ const searchGroupTag = (event) => {
           }}</small>
         </div>
         <div class="p-inputgroup col-span-2">
-          <span class="p-inputgroup-addon">
-            <i class="pi pi-link"></i>
-          </span>
           <div class="p-float-label">
             <InputText
               class="w-full"
               placeholder="enter video url"
-              v-model="exerciseStore.form.values.video"
+              v-model="exerciseStore.form.values.youtube_url"
               inputId="video"
             />
-            <label for="video">Video</label>
+            <label for="video">Youtube url</label>
           </div>
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-youtube"></i>
+          </span>
         </div>
       </div>
       <div class="flex flex-col w-1/2 gap-6">

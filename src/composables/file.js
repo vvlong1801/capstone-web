@@ -1,37 +1,39 @@
-import { ref } from "vue";
-import { useToast } from "primevue/usetoast";
+import { ref, readonly } from 'vue';
+import { useToast } from 'primevue/usetoast';
 
 export function useFile() {
   const file = ref(null);
   const toast = useToast();
 
-  const upload = async (event) => {
+  async function upload(event) {
     const formData = new FormData();
-    formData.append("file", event.files[0]);
+    let input = event instanceof File ? event : event.files[0];
+    formData.append('file', input);
 
     try {
-      const res = await window.axios.post("upload", formData, {
+      const res = await window.axios.post('upload', formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
-        },
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      file.value =  res.data;
+      file.value = res.data;
+      console.log(file.value);
 
       toast.add({
-        severity: "success",
-        summary: "Success",
-        detail: "File Uploaded",
-        life: 3000,
+        severity: 'success',
+        summary: 'Success',
+        detail: 'File Uploaded',
+        life: 3000
       });
     } catch (error) {
       toast.add({
-        severity: "error",
-        summary: "Error Upload",
+        severity: 'error',
+        summary: 'Error Upload',
         detail: error,
-        life: 3000,
+        life: 3000
       });
     }
-  };
-  return { file, upload };
+  }
+  return { file: readonly(file), upload };
 }
