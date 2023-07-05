@@ -13,6 +13,7 @@ const auth = (to, from, next) => {
   if (!localStorage.getItem('access_token')) {
     return next({ name: 'login' });
   }
+  console.log('router');
   next();
 };
 
@@ -59,6 +60,45 @@ const router = createRouter({
           path: '/exercises/:id',
           name: 'exercise.show',
           component: () => import('@/views/exercise/DetailView.vue')
+        },
+        //==============challenge================
+        {
+          path: '/challenges',
+          name: 'challenges.index',
+          component: () => import('@/views/challenge/IndexView.vue')
+        },
+        {
+          path: '/challenges/create',
+          name: 'challenges.create',
+          component: () => import('@/views/challenge/CreateView.vue'),
+          redirect: '/challenges/create/step-one',
+          children: [
+            {
+              path: '/challenges/create/step-one',
+              name: 'challenges.create.step_one',
+              component: () => import('@/views/challenge/forms/StepOne.vue')
+            },
+            {
+              path: '/challenges/create/step-two',
+              name: 'challenges.create.step_two',
+              component: () => import('@/views/challenge/forms/StepTwo.vue')
+            },
+            {
+              path: '/challenges/create/step-three',
+              name: 'challenges.create.step_three',
+              component: () => import('@/views/challenge/forms/StepThree.vue')
+            }
+          ]
+        },
+        {
+          path: '/challenges/:id/edit',
+          name: 'challenges.edit',
+          component: () => import('@/views/challenge/EditView.vue')
+        },
+        {
+          path: '/challenges/:id',
+          name: 'challenges.show',
+          component: () => import('@/views/challenge/DetailView.vue')
         }
       ]
     },

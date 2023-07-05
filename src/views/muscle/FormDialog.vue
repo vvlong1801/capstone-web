@@ -1,65 +1,37 @@
 <script setup>
-import { defineProps } from "vue";
-import { useMuscleStore } from "@/stores/muscle.js";
-import FileUpload from "primevue/fileupload";
-import { useToast } from "primevue/usetoast";
+import { defineProps } from 'vue';
+import { useMuscleStore } from '@/stores/muscle.js';
+import FileUpload from 'primevue/fileupload';
+import { useFile } from '@/composables/file';
 
 const { form, createMuscle, editMuscle } = useMuscleStore();
-const toast = useToast();
+const { file, upload } = useFile();
 const props = defineProps({
   visible: {
     type: Boolean,
-    default: false,
+    default: false
   },
   formType: {
     type: String,
-    default: "create",
+    default: 'create',
     validator(value) {
-      return ["create", "edit"].includes(value);
-    },
-  },
+      return ['create', 'edit'].includes(value);
+    }
+  }
 });
 
-const emits = defineEmits(["update:visible"]);
+const emits = defineEmits(['update:visible']);
 
 const onSubmit = () => {
-  if (props.formType.toLowerCase() == "create") {
+  if (props.formType.toLowerCase() == 'create') {
     createMuscle();
   } else editMuscle();
-  emits("update:visible", false);
+  emits('update:visible', false);
 };
 
 const onUpload = async (event) => {
-  const file = event.files[0];
-
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("collection", "muscles");
-  formData.append("type", "image");
-
-  try {
-    const res = await window.axios.post("upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    form.image = res.data.data || res.data;
-
-    toast.add({
-      severity: "success",
-      summary: "Success",
-      detail: "File Uploaded",
-      life: 3000,
-    });
-  } catch (error) {
-    toast.add({
-      severity: "error",
-      summary: "Error Upload",
-      detail: error,
-      life: 3000,
-    });
-  }
+  await upload(event);
+  form.image = file.value;
 };
 </script>
 <template>
@@ -73,13 +45,7 @@ const onUpload = async (event) => {
     <div class="grid grid-cols-4 gap-6 py-6">
       <label for="name" class="col-span-2">
         <div>Name</div>
-        <InputText
-          class="w-full"
-          type="text"
-          label="name"
-          id="name"
-          v-model="form.name"
-        />
+        <InputText class="w-full" type="text" label="name" id="name" v-model="form.name" />
       </label>
 
       <div class="col-span-1">
@@ -112,12 +78,7 @@ const onUpload = async (event) => {
       <div class="col-span-4">
         <label for="address1">
           <span>Description</span>
-          <Textarea
-            v-model="form.description"
-            class="textarea-restyle"
-            rows="5"
-            id="description"
-          />
+          <Textarea v-model="form.description" class="textarea-restyle" rows="5" id="description" />
         </label>
       </div>
     </div>

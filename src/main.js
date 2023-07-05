@@ -9,6 +9,7 @@ import router from './router';
 import PrimeVue from 'primevue/config';
 import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
+import Tooltip from 'primevue/tooltip';
 
 import { registerGlobalComponents } from './utils/import';
 
@@ -19,6 +20,8 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+
+app.directive('tooltip', Tooltip);
 
 registerGlobalComponents(app);
 app.mount('#app');

@@ -64,6 +64,7 @@ const showFilter = () => {
           :exercise="exe"
           :key="exe.id"
           @click-delete="confirmDelete"
+          :show-action="true"
         />
       </div>
     </div>

@@ -1,24 +1,28 @@
-import { computed } from "vue";
-import { defineStore } from "pinia";
-import { useStorage } from "@vueuse/core";
-import { useRouter } from "vue-router";
+import { computed } from 'vue';
+import { defineStore } from 'pinia';
+import { useStorage } from '@vueuse/core';
+import { useRouter } from 'vue-router';
 
-export const useAuthStore = defineStore("auth", () => {
+export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
-  const accessToken = useStorage("access_token", "");
+  const accessToken = useStorage('access_token', '');
+  const userInfo = useStorage('user_info', {});
   const check = computed(() => !!accessToken.value);
+  const isAdmin = computed(
+    () => userInfo.value.role == 'admin' || userInfo.value.role == 'superAdmin'
+  );
+  const isSuperAdmin = computed(() => userInfo.value.role == 'superAdmin');
 
   function setAccessToken(value) {
     accessToken.value = value;
-    window.axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${accessToken.value}`;
+    window.axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`;
   }
 
-  function login(accessToken) {
+  function login(accessToken, user) {
     setAccessToken(accessToken);
+    userInfo.value = user;
 
-    router.push({ name: "dashboard" });
+    router.push({ name: 'dashboard' });
   }
 
   function destroyTokenAndRedirectTo(routeName) {
@@ -27,10 +31,11 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   async function logout() {
-    return window.axios.post("logout").finally(() => {
-      destroyTokenAndRedirectTo("login");
+    return window.axios.post('logout').finally(() => {
+      userInfo.value = {};
+      destroyTokenAndRedirectTo('login');
     });
   }
 
-  return { accessToken, login, logout, check, destroyTokenAndRedirectTo };
+  return { accessToken, login, logout, check, destroyTokenAndRedirectTo, isAdmin, isSuperAdmin, userInfo };
 });
