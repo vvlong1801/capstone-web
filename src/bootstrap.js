@@ -28,6 +28,7 @@ axios.interceptors.response.use(
 
 window.Pusher = Pusher;
 
+// TODO: Revert this code
 window.Echo = new Echo({
   broadcaster: 'pusher',
   key: import.meta.env.VITE_PUSHER_APP_KEY,

@@ -10,6 +10,7 @@ const guest = (to, from, next) => {
 };
 
 const auth = (to, from, next) => {
+  // TODO: Revert this code
   if (!localStorage.getItem('access_token')) {
     return next({ name: 'login' });
   }
@@ -99,7 +100,13 @@ const router = createRouter({
           path: '/challenges/:id',
           name: 'challenges.show',
           component: () => import('@/views/challenge/DetailView.vue')
-        }
+        },
+        //==============members================
+        {
+          path: '/members',
+          name: 'member.index',
+          component: () => import('@/views/member/IndexView.vue')
+        },
       ]
     },
     {
