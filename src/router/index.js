@@ -11,10 +11,10 @@ const guest = (to, from, next) => {
 
 const auth = (to, from, next) => {
   // TODO: Revert this code
-  // if (!localStorage.getItem('access_token')) {
-  //   return next({ name: 'login' });
-  // }
-  // console.log('router');
+  if (!localStorage.getItem('access_token')) {
+    return next({ name: 'login' });
+  }
+  console.log('router');
   next();
 };
 
@@ -111,6 +111,12 @@ const router = createRouter({
           path: '/members/:id',
           name: 'member.show',
           component: () => import('@/views/member/DetailView.vue')
+        },
+         //==============invitation================
+         {
+          path: '/invitations',
+          name: 'invitation',
+          component: () => import('@/views/invitation/IndexView.vue')
         },
       ]
     },
