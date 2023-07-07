@@ -106,29 +106,42 @@ export const MemberService = {
     }]
   },
 
-  getCustomersSmall() {
-      return Promise.resolve(this.getData().slice(0, 10));
+  getCustomersMedium() {
+      return Promise.resolve(this.getData().slice(0, 50));
+  },
+};
+
+export const DetailMemberService = {
+  getData() {
+    return [
+      {
+        challenge_name: 'Challenge 1',
+        total_day: 6,
+        total_practice_time: 58,
+        total_calo: 35.7, 
+      },
+      {
+        challenge_name: 'Challenge 2',
+        total_day: 2,
+        total_practice_time: 8,
+        total_calo: 26.1, 
+      },
+      {
+        challenge_name: 'Challenge 3',
+        total_day: 4,
+        total_practice_time: 8.5,
+        total_calo: 20.5, 
+      },
+      {
+        challenge_name: 'Challenge 5',
+        total_day: 4,
+        total_practice_time: 5,
+        total_calo: 30.6, 
+      },
+    ]
   },
 
   getCustomersMedium() {
       return Promise.resolve(this.getData().slice(0, 50));
   },
-
-  getCustomersLarge() {
-      return Promise.resolve(this.getData().slice(0, 200));
-  },
-
-  getCustomersXLarge() {
-      return Promise.resolve(this.getData());
-  },
-
-  getCustomers(params) {
-      const queryParams = params
-          ? Object.keys(params)
-                .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-                .join('&')
-          : '';
-
-      return fetch('https://www.primefaces.org/data/customers?' + queryParams).then((res) => res.json());
-  }
 };

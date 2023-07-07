@@ -29,12 +29,12 @@ axios.interceptors.response.use(
 window.Pusher = Pusher;
 
 // TODO: Revert this code
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: import.meta.env.VITE_PUSHER_APP_KEY,
-  cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-  forceTLS: true,
-  bearerToken: accessToken.value,
-  authEndpoint: 'http://192.168.1.232:8000/api/broadcasting/auth',
-});
-console.log(window.Echo);
+// window.Echo = new Echo({
+//   broadcaster: 'pusher',
+//   key: import.meta.env.VITE_PUSHER_APP_KEY,
+//   cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+//   forceTLS: true,
+//   bearerToken: accessToken.value,
+//   authEndpoint: 'http://192.168.1.232:8000/api/broadcasting/auth',
+// });
+// console.log(window.Echo);
