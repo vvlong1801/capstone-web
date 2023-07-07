@@ -11,35 +11,35 @@ const newChallengeId = ref();
 
 const toast = useToast();
 const authStore = useAuthStore();
-console.log(authStore.userInfo.id);
+// console.log(authStore.userInfo.id);
 
-window.Echo.private(`App.Models.User.${authStore.userInfo.id}`).notification((notification) => {
-  console.log(notification);
-  toast.add({
-    severity: 'info',
-    summary: notification.challenge_name,
-    detail: notification.message,
-    group: 'notify'
-  });
-});
-if (authStore.isSuperAdmin) {
-  window.Echo.private('new-challenge').listen('NewChallengeEvent', async (e) => {
-    console.log(`${e.createdBy} created the challenge ${e.name}`);
-    newChallengeId.value = e.id;
-    await toast.add({
-      severity: 'info',
-      summary: 'You have a new challenge',
-      detail: `${e.createdBy} created the challenge ${e.name}`,
-      group: 'new-challenge'
-    });
-  });
-}
+// window.Echo.private(`App.Models.User.${authStore.userInfo.id}`).notification((notification) => {
+//   console.log(notification);
+//   toast.add({
+//     severity: 'info',
+//     summary: notification.challenge_name,
+//     detail: notification.message,
+//     group: 'notify'
+//   });
+// });
+// if (authStore.isSuperAdmin) {
+//   window.Echo.private('new-challenge').listen('NewChallengeEvent', async (e) => {
+//     console.log(`${e.createdBy} created the challenge ${e.name}`);
+//     newChallengeId.value = e.id;
+//     await toast.add({
+//       severity: 'info',
+//       summary: 'You have a new challenge',
+//       detail: `${e.createdBy} created the challenge ${e.name}`,
+//       group: 'new-challenge'
+//     });
+//   });
+// }
 
 // const onClickNewChallengeNotify = () => {};
 </script>
 <template>
   <div class="layout-wrapper">
-    <app-topbar v-model:showSideBar="showSideBar" />
+    <!-- <app-topbar v-model:showSideBar="showSideBar" /> -->
     <div class="layout-sidebar" v-if="showSideBar">
       <app-sidebar />
     </div>

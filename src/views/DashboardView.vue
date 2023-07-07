@@ -1,5 +1,12 @@
-<script setup></script>
+<script setup>
+import DashboardChart from './dashboard/Chart.vue'
+import DashboardCards from './dashboard/Cards.vue'
+</script>
+
 
 <template>
-  <div><Button label="Primary"></Button></div>
+  <div class="flex flex-col gap-y-4">
+    <dashboard-chart />
+    <dashboard-cards />
+  </div>
 </template>
