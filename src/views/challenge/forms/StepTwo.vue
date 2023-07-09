@@ -7,42 +7,11 @@ import InputNumber from 'primevue/inputnumber';
 
 import { ref, reactive, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import {
-  useForm,
-  useFieldArray
-} from 'vee-validate';
-import * as Yup from 'yup';
-
 import { useChallengeStore } from '@/stores/challenge';
 
 const router = useRouter();
 
-const validationSchema = Yup.object({
-  // array phase
-  phases: Yup.array().of(
-    // phase object
-    Yup.object({
-      name: Yup.string(),
-      total_days: Yup.number().required(),
-      // array sessions
-      sessions: Yup.array().of(
-        // session object
-        Yup.object({
-          descriptions: Yup.string().nullable(),
-          // array workout session
-          exercises: Yup.array().of(
-            // workout exercise object
-            Yup.object({
-              requirement: Yup.string().required()
-            })
-          )
-        })
-      )
-    })
-  )
-});
-
-const initValues = {
+const stepTwoData = reactive({
   phases: [
     {
       name: '',
@@ -55,27 +24,16 @@ const initValues = {
       ]
     }
   ]
-};
-
-const {
-  values: stepTwoForm,
-  setValues,
-} = useForm({
-  validationSchema: validationSchema,
-  initialValues: initValues
 });
-
-const { push, remove } = useFieldArray('phases');
-
 const store = useChallengeStore();
 
 onMounted(() => {
   if (store.form.template) {
-    setValues(store.form.template);
+    Object.assign(stepTwoData, store.form.template);
   }
 });
 
-watch(stepTwoForm, (newValue) => {
+watch(stepTwoData, (newValue) => {
   store.form.template = newValue;
 });
 
@@ -85,7 +43,7 @@ const toggleTotalDays = (event, index) => {
   totalDaysPopup.value[index].toggle(event);
 };
 const onCreatePhase = () =>
-  push({
+  stepTwoData.phases.push({
     name: '',
     total_days: 1,
     sessions: [
@@ -97,7 +55,6 @@ const onCreatePhase = () =>
   });
 const onUpdateSessions = (newTotalDay, phase) => {
   let numNewPhase = newTotalDay - phase.sessions.length;
-  console.log(numNewPhase);
   if (numNewPhase > 0) {
     let newPhase = Array.from({ length: numNewPhase }, () =>
       reactive({
@@ -130,7 +87,7 @@ const onNext = () => {
       <Button label="New Phase" icon="pi pi-plus" size="small" @click="onCreatePhase" />
     </div>
     <div class="space-y-8 w-full">
-      <template v-for="(phase, index) in stepTwoForm.phases" :key="phase.key">
+      <template v-for="(phase, index) in stepTwoData.phases" :key="phase.key">
         <Panel header="Beginner (7 days)" :toggleable="index > 0">
           <template #header>
             <Inplace :closable="true">

@@ -36,7 +36,7 @@ const fileService = useFile();
 
 const onUpload = async (event, type) => {
   await fileService.upload(event, 'exercises', type);
-  exerciseStore.form.values[type] = fileService.file.value;
+  exerciseStore.form.setFieldValue(type, fileService.file.value);
 };
 
 const checkValidate = (type) => exerciseStore.form.errors[type] && exerciseStore.form.submitCount;
@@ -66,7 +66,8 @@ const searchGroupTag = (event) => {
           <div class="p-float-label">
             <InputText
               id="name"
-              v-model="exerciseStore.form.values.name"
+              :model-value="exerciseStore.form.values.name"
+              @update:model-value="(value) => exerciseStore.form.setFieldValue('name', value)"
               class="w-full"
               inputId="name"
             />
@@ -78,7 +79,8 @@ const searchGroupTag = (event) => {
         </div>
         <div class="col-span-2">
           <SelectButton
-            v-model="exerciseStore.form.values.level"
+            :model-value="exerciseStore.form.values.level"
+            @update:model-value="(value) => exerciseStore.form.setFieldValue('level', value)"
             dataKey="value"
             optionValue="value"
             :options="TYPE_LEVEL"
@@ -98,7 +100,10 @@ const searchGroupTag = (event) => {
 
         <div class="col-span-2">
           <SelectButton
-            v-model="exerciseStore.form.values.requirement_unit"
+            :model-value="exerciseStore.form.values.requirement_unit"
+            @update:model-value="
+              (value) => exerciseStore.form.setFieldValue('requirement_unit', value)
+            "
             :options="EVALUATE_METHOD"
             optionValue="value"
             aria-labelledby="multiple"
@@ -120,7 +125,10 @@ const searchGroupTag = (event) => {
             <div class="p-float-label">
               <InputText
                 id="requirement_initial"
-                v-model.number="exerciseStore.form.values.requirement_initial"
+                :model-value="exerciseStore.form.values.requirement_initial"
+                @update:model-value="
+                  (value) => exerciseStore.form.setFieldValue('requirement_initial', value)
+                "
                 class="w-full"
                 inputId="requirement_initial"
               />
@@ -139,7 +147,8 @@ const searchGroupTag = (event) => {
               :options="muscleStore.muscles"
               :loading="muscleStore.muscles === null"
               optionLabel="name"
-              v-model="exerciseStore.form.values.muscles"
+              :model-value="exerciseStore.form.values.muscles"
+              @update:model-value="(value) => exerciseStore.form.setFieldValue('muscles', value)"
               display="chip"
               inputId="muscles"
             >
@@ -181,7 +190,8 @@ const searchGroupTag = (event) => {
               class="w-full"
               :options="equipmentStore.equipments"
               optionLabel="name"
-              v-model="exerciseStore.form.values.equipment"
+              :model-value="exerciseStore.form.values.equipment"
+              @update:model-value="(value) => exerciseStore.form.setFieldValue('equipment', value)"
               :loading="equipmentStore.equipments === null"
               inputId="equipment"
             >
@@ -201,7 +211,8 @@ const searchGroupTag = (event) => {
         </div>
         <div class="p-float-label col-span-2">
           <AutoComplete
-            v-model="exerciseStore.form.values.group_tags"
+            :model-value="exerciseStore.form.values.group_tags"
+            @update:model-value="(value) => exerciseStore.form.setFieldValue('group_tags', value)"
             multiple
             :suggestions="filteredGroupTags"
             optionLabel="name"
@@ -282,7 +293,10 @@ const searchGroupTag = (event) => {
               <InputText
                 class="w-full"
                 placeholder="enter video url"
-                v-model="exerciseStore.form.values.youtube_url"
+                :model-value="exerciseStore.form.values.youtube_url"
+                @update:model-value="
+                  (value) => exerciseStore.form.setFieldValue('youtube_url', value)
+                "
                 inputId="video"
               />
               <label for="video">Youtube url</label>
@@ -305,7 +319,8 @@ const searchGroupTag = (event) => {
         />
         <span class="p-float-label" v-if="typeDesc == 'free'">
           <Textarea
-            v-model="exerciseStore.form.values.description"
+            :model-value="exerciseStore.form.values.description"
+            @update:model-value="(value) => exerciseStore.form.setFieldValue('description', value)"
             rows="10"
             class="w-full"
             inputId="description"

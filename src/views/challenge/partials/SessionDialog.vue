@@ -26,7 +26,7 @@ const sources = computed(() =>
 const onRemoveDestinations = (index) => destinations.value.splice(index, 1);
 const onAddToDestinations = (index) => {
   sources.value[index].requirement = sources.value[index].requirement_initial;
-  destinations.value.push(sources.value[index]);
+  destinations.value = [...destinations.value, sources.value[index]];
 };
 
 const onSave = () => {
