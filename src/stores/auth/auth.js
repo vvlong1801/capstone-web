@@ -22,6 +22,12 @@ export const useAuthStore = defineStore('auth', () => {
     setAccessToken(accessToken);
     userInfo.value = user;
 
+    if (user.role == 'admin' || user.role == 'superAdmin') {
+      window.axios.defaults.baseURL = import.meta.env.VITE_BASE_URL + '/admin';
+    } else if (user.role == 'creator') {
+      window.axios.defaults.baseURL = import.meta.env.VITE_BASE_URL + '/creator';
+    }
+
     router.push({ name: 'dashboard' });
   }
 
@@ -37,5 +43,14 @@ export const useAuthStore = defineStore('auth', () => {
     });
   }
 
-  return { accessToken, login, logout, check, destroyTokenAndRedirectTo, isAdmin, isSuperAdmin, userInfo };
+  return {
+    accessToken,
+    login,
+    logout,
+    check,
+    destroyTokenAndRedirectTo,
+    isAdmin,
+    isSuperAdmin,
+    userInfo
+  };
 });
