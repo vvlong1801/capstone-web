@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 import { useAuthStore } from './auth';
+import { useToast } from 'primevue/usetoast';
 
 export const useLoginStore = defineStore('login', () => {
+  const toast = useToast();
   const auth = useAuthStore();
   const errors = reactive({});
   const loading = ref(false);
@@ -28,13 +30,15 @@ export const useLoginStore = defineStore('login', () => {
     return window.axios
       .post(`${import.meta.env.VITE_BASE_URL}/creator/login`, form)
       .then((res) => {
-        auth.login(res.data.access_token, res.data.user_info);
+        auth.login(res?.data.access_token, res.data.user_info);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.response.status === 422) {
-          errors.value = err.response.data.errors;
-        }
+        toast.add({
+          severity: 'error',
+          summary: 'error',
+          detail: err.response.data.message,
+          life: 3000
+        });
       })
       .finally(() => {
         form.password = '';

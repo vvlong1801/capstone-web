@@ -18,6 +18,10 @@ const suggestionItems = ref([]);
 const search = (event) => {
   suggestionItems.value = [...Array(10).keys()].map((item) => event.query + '-' + item);
 };
+
+const onSignOut = async () => {
+  await authStore.logout();
+};
 </script>
 <template>
   <div class="layout-topbar">
@@ -47,7 +51,7 @@ const search = (event) => {
       />
 
       <Avatar
-        :label="authStore.userInfo.name[0]"
+        :label="authStore.userInfo?.name[0]"
         image="/assets/images/banner.jpg"
         class="mr-2 !bg-orange-500 cursor-pointer"
         shape="circle"
@@ -58,30 +62,27 @@ const search = (event) => {
         <h2 class="font-bold">Welcome</h2>
         <h5 class="font-medium text-slate-500 mb-9">{{ authStore.userInfo.name }}</h5>
         <ul class="list-none m-0 p-0 w-full space-y-3">
-          <li class="p-3 border border-slate-300 rounded-md">
+          <li class="px-3 py-4 border border-slate-300 rounded-md">
             <router-link to="/" class="flex items-center">
               <span><i class="pi pi-user text-xl text-primary-500"></i></span>
               <div class="ml-3">
                 <span class="mb-2 font-semibold">Profile</span>
-                <p class="text-color-secondary">Lorem ipsum date visale</p>
               </div>
             </router-link>
           </li>
-          <li class="p-3 border border-slate-300 rounded-md">
+          <li class="px-3 py-4 border border-slate-300 rounded-md">
             <router-link to="/" class="flex items-center">
               <span><i class="pi pi-cog text-xl text-primary-500"></i></span>
               <div class="ml-3">
                 <span class="mb-2 font-semibold">Settings</span>
-                <p class="text-color-secondary">Lorem ipsum date visale</p>
               </div>
             </router-link>
           </li>
-          <li class="p-3 border border-slate-300 rounded-md">
-            <div class="flex items-center cursor-pointer" @click="authStore.logout">
+          <li class="px-3 py-4 border border-slate-300 rounded-md">
+            <div class="flex items-center cursor-pointer w-full h-full" @click="onSignOut">
               <span><i class="pi pi-power-off text-xl text-primary-500"></i></span>
               <div class="ml-3">
                 <span class="mb-2 font-semibold">Sign Out</span>
-                <p class="text-color-secondary">Lorem ipsum date visale</p>
               </div>
             </div>
           </li>

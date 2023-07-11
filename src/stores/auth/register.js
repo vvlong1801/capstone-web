@@ -33,20 +33,27 @@ export const useRegisterStore = defineStore('register', () => {
     return window.axios
       .post('register', form)
       .then((res) => {
-        console.log(res);
         if (res.status == 204) {
           verifyEmail.value = formatVerifyEmail(form.email);
+          toast.add({
+            severity: 'success',
+            summary: 'register account success',
+            detail: res.message,
+            life: 3000
+          });
           router.push('/auth/verify');
+        }
+        if (res.status == 500) {
+          toast.add({
+            severity: 'error',
+            summary: 'error submit',
+            detail: res.message,
+            life: 3000
+          });
         }
       })
       .catch((err) => {
         console.log(err);
-        // toast.add({
-        //   severity: 'error',
-        //   summary: 'error submit',
-        //   detail: err.res,
-        //   life: 3000
-        // });
       })
       .finally(() => {
         form.password = '';
