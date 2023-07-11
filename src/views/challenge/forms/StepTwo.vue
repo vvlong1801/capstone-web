@@ -72,6 +72,9 @@ const onUpdateSessions = (newTotalDay, phase) => {
 };
 const onClearSession = (phase) => ((phase.sessions = []), (phase.total_days = 0));
 
+const onRemovePhase = (index) => {
+  stepTwoData.phases.splice(index, 1);
+};
 const onNext = () => {
   console.log('next');
   router.push({ name: 'challenges.create.step_three' });
@@ -152,7 +155,7 @@ const onNext = () => {
               rounded
               aria-label="delete"
               size="small"
-              @click="remove(index)"
+              @click="onRemovePhase(index)"
             />
           </template>
           <div class="flex flex-wrap gap-4 justify-evenly">

@@ -2,11 +2,13 @@ import { computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
 import { useRouter } from 'vue-router';
+import { setAxiosBaseUrl } from '@/utils/utilities.js';
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
   const accessToken = useStorage('access_token', '');
   const userInfo = useStorage('user_info', {});
+
   const check = computed(() => !!accessToken.value);
   const isAdmin = computed(
     () => userInfo.value.role == 'admin' || userInfo.value.role == 'superAdmin'
@@ -22,6 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
     setAccessToken(accessToken);
     userInfo.value = user;
 
+    setAxiosBaseUrl(user.role);
     router.push({ name: 'dashboard' });
   }
 
@@ -31,11 +34,26 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    return window.axios.post('logout').finally(() => {
-      userInfo.value = {};
-      destroyTokenAndRedirectTo('login');
-    });
+    await window.axios
+      .post('logout')
+      .then(() => {
+        console.log('logout success');
+        localStorage.setItem('user_info', {});
+        destroyTokenAndRedirectTo('login');
+      })
+      .finally(() => {
+        router.push('/auth/login');
+      });
   }
 
-  return { accessToken, login, logout, check, destroyTokenAndRedirectTo, isAdmin, isSuperAdmin, userInfo };
+  return {
+    accessToken,
+    login,
+    logout,
+    check,
+    destroyTokenAndRedirectTo,
+    isAdmin,
+    isSuperAdmin,
+    userInfo
+  };
 });

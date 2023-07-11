@@ -1,8 +1,9 @@
 <script setup>
-import { RouterView } from "vue-router";
+import { RouterView } from 'vue-router';
 </script>
 <template>
   <div>
+    <Toast />
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1600 800"

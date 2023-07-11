@@ -11,10 +11,9 @@ const guest = (to, from, next) => {
 
 const auth = (to, from, next) => {
   // TODO: Revert this code
-  // if (!localStorage.getItem('access_token')) {
-  //   return next({ name: 'login' });
-  // }
-  // console.log('router');
+  if (!localStorage.getItem('access_token')) {
+    return next({ name: 'login' });
+  }
   next();
 };
 
@@ -123,7 +122,17 @@ const router = createRouter({
           path: '/auth/login',
           name: 'login',
           component: () => import('@/views/auth/LoginView.vue')
-        }
+        },
+        {
+          path: '/auth/register',
+          name: 'register',
+          component: () => import('@/views/auth/RegisterView.vue')
+        },
+        {
+          path: '/auth/verify',
+          name: 'verify',
+          component: () => import('@/views/auth/VerifyView.vue')
+        },
       ]
     }
   ]
