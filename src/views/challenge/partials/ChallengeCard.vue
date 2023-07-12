@@ -5,12 +5,12 @@ import { useChallengeStore } from '@/stores/challenge';
 
 const { deleteChallenge } = useChallengeStore();
 const rate = ref(0);
-const props = defineProps(['challenge']);
+defineProps(['challenge']);
 </script>
 <template>
   <div class="relative h-fit border p-outline-primary rounded-md min-h-[500px] overflow-hidden">
     <img
-      :src="challenge.main_image.url"
+      :src="challenge.main_image?.url"
       alt="banner"
       srcset=""
       class="w-full h-[200px] object-cover"

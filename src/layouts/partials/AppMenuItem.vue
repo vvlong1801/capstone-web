@@ -1,20 +1,24 @@
 <script setup>
-import { defineProps } from "vue";
-import { useRoute } from "vue-router";
+import { defineProps, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth/auth';
+
 const route = useRoute();
+const authStore = useAuthStore();
+
 defineProps({
   item: {
     type: Object,
-    default: () => ({}),
+    default: () => ({})
   },
   index: {
     type: Number,
-    default: 0,
+    default: 0
   },
   root: {
     type: Boolean,
-    default: true,
-  },
+    default: true
+  }
   // parentItemKey: {
   //   type: String,
   //   default: null,
@@ -24,10 +28,15 @@ defineProps({
 const checkActiveItem = (item) => {
   return route.path.includes(item.to);
 };
+
+const role = ref(authStore.userInfo.role);
 </script>
 <template>
   <li>
-    <div v-if="root && item.visible !== false" class="app-menu_item-root_text">
+    <div
+      v-if="root && item.visible !== false && item.role?.includes(role)"
+      class="app-menu_item-root_text"
+    >
       {{ item.label }}
     </div>
     <router-link
@@ -39,23 +48,18 @@ const checkActiveItem = (item) => {
     >
       <i :class="item.icon" class="!text-xl"></i>
       <span class="!text-lg">{{ item.label }}</span>
-      <i
-        class="pi pi-fw pi-angle-down layout-submenu-toggler"
-        v-if="item.items"
-      ></i>
+      <i class="pi pi-fw pi-angle-down layout-submenu-toggler" v-if="item.items"></i>
     </router-link>
-    <Transition
-      v-if="item.items && item.visible !== false"
-      name="layout-submenu"
-    >
-      <ul v-show="root ? true : isActiveMenu" class="layout-submenu">
-        <app-menu-item
-          v-for="(child, i) in item.items"
-          :key="child"
-          :index="i"
-          :item="child"
-          :root="false"
-        ></app-menu-item>
+    <Transition v-if="item.items" name="layout-submenu">
+      <ul class="layout-submenu">
+        <template v-for="(child, i) in item.items" :key="child">
+          <app-menu-item
+            :index="i"
+            :item="child"
+            :root="false"
+            v-if="child.role?.includes(role)"
+          ></app-menu-item>
+        </template>
       </ul>
     </Transition>
   </li>

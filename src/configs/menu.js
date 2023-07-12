@@ -1,58 +1,86 @@
 export const appMenu = [
   {
-    label: "Home",
+    label: 'Home',
+    role: ['admin', 'superAdmin', 'creator'],
     items: [
       {
-        label: "Dashboard",
-        icon: "pi pi-fw pi-th-large",
-        to: "/dashboard",
-        role: ["admin", "superAdmin", "creator"]
-      },
-    ],
+        label: 'Dashboard',
+        icon: 'pi pi-fw pi-th-large',
+        to: '/dashboard',
+        role: ['admin', 'superAdmin', 'creator']
+      }
+    ]
   },
   {
-    label: "Challenges",
+    label: 'Accounts',
+    role: ['admin', 'superAdmin'],
     items: [
       {
-        label: "Challenges",
-        icon: "pi pi-fw pi-box",
-        to: "/challenges",
+        label: 'Workout Users',
+        icon: 'pi pi-fw pi-users',
+        to: '/workout-users',
+        role: ['admin', 'superAdmin']
       },
       {
-        label: "Members",
-        icon: "pi pi-fw pi-users",
-        to: "/members",
-      },
-      {
-        label: "Invitations",
-        icon: "pi pi-fw pi-directions",
-        to: "/invitations",
-      },
-      {
-        label: "Feedbacks",
-        icon: "pi pi-fw pi-comments",
-        to: "/feedbacks",
-      },
-    ],
+        label: 'Creators',
+        icon: 'pi pi-fw pi-users',
+        to: '/creators',
+        role: ['admin', 'superAdmin']
+      }
+    ]
   },
   {
-    label: "Sources",
+    label: 'Challenges',
+    role: ['admin', 'superAdmin', 'creator'],
     items: [
       {
-        label: "Exercises",
-        icon: "pi pi-fw pi-clone",
-        to: "/exercises",
+        label: 'Challenges',
+        icon: 'pi pi-fw pi-box',
+        to: '/challenges',
+        role: ['admin', 'superAdmin', 'creator']
       },
       {
-        label: "Equipments",
-        icon: "pi pi-fw pi-database",
-        to: "/equipments",
+        label: 'Members',
+        icon: 'pi pi-fw pi-users',
+        to: '/members',
+        role: ['creator']
       },
       {
-        label: "Muscles",
-        icon: "pi pi-fw pi-database",
-        to: "/muscles",
+        label: 'Invitations',
+        icon: 'pi pi-fw pi-directions',
+        to: '/invitations',
+        role: ['creator']
       },
-    ],
+      {
+        label: 'Feedbacks',
+        icon: 'pi pi-fw pi-comments',
+        to: '/feedbacks',
+        role: ['creator']
+      }
+    ]
   },
+  {
+    label: 'Sources',
+    role: ['admin', 'superAdmin', 'creator'],
+    items: [
+      {
+        label: 'Exercises',
+        icon: 'pi pi-fw pi-clone',
+        to: '/exercises',
+        role: ['admin', 'superAdmin', 'creator']
+      },
+      {
+        label: 'Equipments',
+        icon: 'pi pi-fw pi-database',
+        to: '/equipments',
+        role: ['admin', 'superAdmin']
+      },
+      {
+        label: 'Muscles',
+        icon: 'pi pi-fw pi-database',
+        to: '/muscles',
+        role: ['admin', 'superAdmin']
+      }
+    ]
+  }
 ];
