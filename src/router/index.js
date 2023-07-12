@@ -28,7 +28,7 @@ const router = createRouter({
         {
           path: '/dashboard',
           name: 'dashboard',
-          component: () => import('@/views/DashboardView.vue')
+          component: () => import('@/views/dashboard/DashboardView.vue')
         },
         {
           path: '/muscles',
@@ -110,7 +110,7 @@ const router = createRouter({
           path: '/members/:id',
           name: 'member.show',
           component: () => import('@/views/member/DetailView.vue')
-        },
+        }
       ]
     },
     {
@@ -132,7 +132,7 @@ const router = createRouter({
           path: '/auth/verify',
           name: 'verify',
           component: () => import('@/views/auth/VerifyView.vue')
-        },
+        }
       ]
     }
   ]

@@ -1,8 +1,7 @@
 <script setup>
-import DashboardChart from './dashboard/Chart.vue'
-import DashboardCards from './dashboard/Cards.vue'
+import DashboardChart from './partials/Chart.vue';
+import DashboardCards from './partials/Cards.vue';
 </script>
-
 
 <template>
   <div class="flex flex-col gap-y-4">

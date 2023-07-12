@@ -5,7 +5,7 @@ import { useChallengeStore } from '@/stores/challenge';
 
 const { deleteChallenge } = useChallengeStore();
 const rate = ref(0);
-const props = defineProps(['challenge']);
+defineProps(['challenge']);
 </script>
 <template>
   <div class="relative h-fit border p-outline-primary rounded-md min-h-[500px] overflow-hidden">
