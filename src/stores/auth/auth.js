@@ -40,6 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
         console.log('logout success');
         localStorage.setItem('user_info', {});
         destroyTokenAndRedirectTo('login');
+        setAxiosBaseUrl('creator');
       })
       .finally(() => {
         router.push('/auth/login');

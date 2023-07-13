@@ -7,15 +7,15 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 import PrimeVue from 'primevue/config';
-import ToastService from "primevue/toastservice";
-import ConfirmationService from "primevue/confirmationservice";
+import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 import Tooltip from 'primevue/tooltip';
 
 import { registerGlobalComponents } from './utils/import';
 
 const app = createApp(App);
-
-app.use(createPinia());
+const pinia = createPinia();
+app.use(pinia);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
