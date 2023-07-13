@@ -10,7 +10,7 @@ defineProps(['challenge']);
 <template>
   <div class="relative h-fit border p-outline-primary rounded-md min-h-[500px] overflow-hidden">
     <img
-      :src="challenge.main_image.url"
+      :src="challenge.main_image?.url"
       alt="banner"
       srcset=""
       class="w-full h-[200px] object-cover"

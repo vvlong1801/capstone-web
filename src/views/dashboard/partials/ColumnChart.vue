@@ -2,6 +2,8 @@
 import Chart from 'primevue/chart';
 import { ref, onMounted } from 'vue';
 
+const props = defineProps(['data', 'labels', 'title', 'color']);
+
 onMounted(() => {
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
@@ -14,19 +16,13 @@ const setChartData = () => {
   const documentStyle = getComputedStyle(document.documentElement);
 
   return {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: props.labels,
     datasets: [
       {
-        label: 'My First dataset',
-        backgroundColor: documentStyle.getPropertyValue('--blue-500'),
-        borderColor: documentStyle.getPropertyValue('--blue-500'),
-        data: [65, 59, 80, 81, 56, 55, 40]
-      },
-      {
-        label: 'My Second dataset',
-        backgroundColor: documentStyle.getPropertyValue('--pink-500'),
-        borderColor: documentStyle.getPropertyValue('--pink-500'),
-        data: [28, 48, 40, 19, 86, 27, 90]
+        label: props.title,
+        backgroundColor: documentStyle.getPropertyValue(`--${props.color}-500`),
+        borderColor: documentStyle.getPropertyValue(`--${props.color}-500`),
+        data: props.data
       }
     ]
   };
@@ -75,6 +71,6 @@ const setChartOptions = () => {
 </script>
 <template>
   <div class="card">
-    <Chart type="bar" :data="chartData" :options="chartOptions" class="h-30rem" />
+    <Chart type="bar" :data="chartData" :options="chartOptions" class="h-full" />
   </div>
 </template>

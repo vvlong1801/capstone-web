@@ -100,6 +100,7 @@ const router = createRouter({
           name: 'challenges.show',
           component: () => import('@/views/challenge/DetailView.vue')
         },
+
         //==============members================
         {
           path: '/members',
@@ -110,6 +111,18 @@ const router = createRouter({
           path: '/members/:id',
           name: 'member.show',
           component: () => import('@/views/member/DetailView.vue')
+        },
+
+        //==============accounts================
+        {
+          path: '/workout-users',
+          name: 'workout_users.index',
+          component: () => import('@/views/account/workout_users/WorkoutUserView.vue')
+        },
+        {
+          path: '/creators',
+          name: 'creators.index',
+          component: () => import('@/views/account/creators/CreatorView.vue')
         }
       ]
     },

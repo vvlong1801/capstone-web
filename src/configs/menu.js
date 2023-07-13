@@ -16,15 +16,15 @@ export const appMenu = [
     role: ['admin', 'superAdmin'],
     items: [
       {
-        label: 'Users',
+        label: 'Workout Users',
         icon: 'pi pi-fw pi-users',
-        to: '/members',
+        to: '/workout-users',
         role: ['admin', 'superAdmin']
       },
       {
         label: 'Creators',
         icon: 'pi pi-fw pi-users',
-        to: '/members',
+        to: '/creators',
         role: ['admin', 'superAdmin']
       }
     ]
