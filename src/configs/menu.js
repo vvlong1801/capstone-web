@@ -16,17 +16,24 @@ export const appMenu = [
     role: ['admin', 'superAdmin'],
     items: [
       {
+        label: 'Creators',
+        icon: 'pi pi-fw pi-users',
+        to: '/creators',
+        role: ['admin', 'superAdmin']
+      },
+      {
         label: 'Workout Users',
         icon: 'pi pi-fw pi-users',
         to: '/workout-users',
         role: ['admin', 'superAdmin']
       },
       {
-        label: 'Creators',
+        label: 'PT Request',
         icon: 'pi pi-fw pi-users',
-        to: '/creators',
+        to: '/personal-trainers',
         role: ['admin', 'superAdmin']
-      }
+      },
+
     ]
   },
   {
@@ -46,15 +53,9 @@ export const appMenu = [
         role: ['creator']
       },
       {
-        label: 'Invitations',
-        icon: 'pi pi-fw pi-directions',
+        label: 'Session Result',
+        icon: 'pi pi-fw pi-ticket',
         to: '/invitations',
-        role: ['creator']
-      },
-      {
-        label: 'Feedbacks',
-        icon: 'pi pi-fw pi-comments',
-        to: '/feedbacks',
         role: ['creator']
       }
     ]
@@ -65,7 +66,7 @@ export const appMenu = [
     items: [
       {
         label: 'Exercises',
-        icon: 'pi pi-fw pi-clone',
+        icon: 'pi pi-fw pi-database',
         to: '/exercises',
         role: ['admin', 'superAdmin', 'creator']
       },
@@ -80,6 +81,47 @@ export const appMenu = [
         icon: 'pi pi-fw pi-database',
         to: '/muscles',
         role: ['admin', 'superAdmin']
+      },
+      {
+        label: 'Tags',
+        icon: 'pi pi-fw pi-clone',
+        to: '/tags',
+        role: ['admin', 'superAdmin']
+      },
+      {
+        label: 'Certificate Issuers',
+        icon: 'pi pi-fw pi-clone',
+        to: '/muscles',
+        role: ['admin', 'superAdmin']
+      },
+      {
+        label: 'Goals',
+        icon: 'pi pi-fw pi-clone',
+        to: '/muscles',
+        role: ['admin', 'superAdmin']
+      },
+      {
+        label: 'Media',
+        icon: 'pi pi-fw pi-images',
+        to: '/muscles',
+        role: ['creator']
+      },
+    ]
+  },
+  {
+    label: 'Others',
+    role: ['creator'],
+    items: [
+      {
+        label: 'Profile',
+        icon: 'pi pi-fw pi-user',
+        to: '/profile',
+        role: ['creator']
+      },
+      {
+        label: 'Settings',
+        icon: 'pi pi-cog',
+        to: '/settings'
       }
     ]
   }
