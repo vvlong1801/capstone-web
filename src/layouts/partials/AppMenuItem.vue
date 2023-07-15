@@ -35,7 +35,7 @@ const role = ref(authStore.userInfo.role);
   <li>
     <div
       v-if="root && item.visible !== false && item.role?.includes(role)"
-      class="app-menu_item-root_text"
+      class="app-menu_item-root_text text-slate-500"
     >
       {{ item.label }}
     </div>
@@ -47,7 +47,7 @@ const role = ref(authStore.userInfo.role);
       :class="{ 'menu_item-active': checkActiveItem(item) }"
     >
       <i :class="item.icon" class="!text-xl"></i>
-      <span class="!text-lg">{{ item.label }}</span>
+      <span class="!text-lg font-medium">{{ item.label }}</span>
       <i class="pi pi-fw pi-angle-down layout-submenu-toggler" v-if="item.items"></i>
     </router-link>
     <Transition v-if="item.items" name="layout-submenu">

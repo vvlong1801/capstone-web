@@ -109,7 +109,7 @@ export const useExerciseStore = defineStore('exercise', () => {
 
   const createExercise = form.handleSubmit(async (values, { resetForm }) => {
     values.muscles = values.muscles.map((item) => item.id);
-    values.equipment = values.equipment?.id ?? null;
+    values.equipment_id = values.equipment?.id ?? null;
 
     console.log(values);
     await window.axios
@@ -126,7 +126,7 @@ export const useExerciseStore = defineStore('exercise', () => {
 
   const editExercise = form.handleSubmit(async (values, { setErrors, resetForm }) => {
     values.muscles = values.muscles.map((item) => item.id);
-    values.equipment = values.equipment.id;
+    values.equipment_id = values.equipment?.id ?? null;
     try {
       const res = await ExerciseAPI.onEditExercise(values.id, values);
       showToast('success', res.message);

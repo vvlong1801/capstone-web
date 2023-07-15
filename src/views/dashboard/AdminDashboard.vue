@@ -1,13 +1,16 @@
 <script setup>
 import ColumnChart from './partials/ColumnChart.vue';
-import PieChart from './partials/PieChart.vue';
+// import PieChart from './partials/PieChart.vue';
 import StatCard from './partials/StatCard.vue';
+import { useStorage } from '@vueuse/core';
 import TopCard from './partials/TopCard.vue';
 
 import { onMounted, computed } from 'vue';
 import { useDashboardStore } from '@/stores/dashboard';
 
 const store = useDashboardStore();
+
+const showSideBar = useStorage('showSideBar', true);
 
 onMounted(async () => {
   await store.getAnalysis();
@@ -127,7 +130,7 @@ const pieCreatorsData = computed(() => {
           :key="challenge.id"
         ></top-card>
       </div>
-      <div class="flex-1">
+      <div class="flex-1" v-if="!showSideBar">
         <column-chart
           class="h-full flex"
           :data="pieChallengeData"
@@ -143,7 +146,7 @@ const pieCreatorsData = computed(() => {
           :key="item.creator.id"
         ></top-card>
       </div>
-      <div class="flex-1">
+      <div class="flex-1" v-if="!showSideBar">
         <column-chart
           class="h-full flex"
           :data="pieCreatorsData"

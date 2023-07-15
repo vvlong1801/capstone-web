@@ -1,6 +1,5 @@
 <!-- eslint-disable vue/valid-v-on -->
 <script setup>
-import Avatar from 'primevue/avatar';
 import Sidebar from 'primevue/sidebar';
 import AutoComplete from 'primevue/autocomplete';
 
@@ -50,43 +49,24 @@ const onSignOut = async () => {
         placeholder="Enter search ..."
       />
 
-      <Avatar
-        :label="authStore.userInfo?.name[0]"
-        image="/assets/images/banner.jpg"
-        class="mr-2 !bg-orange-500 cursor-pointer"
-        shape="circle"
-        size="large"
+      <Button
+        icon="pi pi-bell"
+        severity="warning"
+        text
+        rounded
+        aria-label="Notification"
         @click="visibleRightSideBar = true"
       />
+      <Button
+        icon="pi pi-sign-out"
+        severity="secondary"
+        text
+        rounded
+        aria-label="Signout"
+        @click="onSignOut"
+      />
+
       <Sidebar v-model:visible="visibleRightSideBar" position="right" class="min-w-fit">
-        <h2 class="font-bold">Welcome</h2>
-        <h5 class="font-medium text-slate-500 mb-9">{{ authStore.userInfo.name }}</h5>
-        <ul class="list-none m-0 p-0 w-full space-y-3">
-          <li class="px-3 py-4 border border-slate-300 rounded-md">
-            <router-link to="/" class="flex items-center">
-              <span><i class="pi pi-user text-xl text-primary-500"></i></span>
-              <div class="ml-3">
-                <span class="mb-2 font-semibold">Profile</span>
-              </div>
-            </router-link>
-          </li>
-          <li class="px-3 py-4 border border-slate-300 rounded-md">
-            <router-link to="/" class="flex items-center">
-              <span><i class="pi pi-cog text-xl text-primary-500"></i></span>
-              <div class="ml-3">
-                <span class="mb-2 font-semibold">Settings</span>
-              </div>
-            </router-link>
-          </li>
-          <li class="px-3 py-4 border border-slate-300 rounded-md">
-            <div class="flex items-center cursor-pointer w-full h-full" @click="onSignOut">
-              <span><i class="pi pi-power-off text-xl text-primary-500"></i></span>
-              <div class="ml-3">
-                <span class="mb-2 font-semibold">Sign Out</span>
-              </div>
-            </div>
-          </li>
-        </ul>
         <h2 class="font-bold mt-9">Notifications</h2>
         <h5 class="font-medium text-slate-500 mb-9">You have 3 notifications</h5>
         <ul class="list-none m-0 p-0 w-full space-y-3">

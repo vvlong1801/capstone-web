@@ -8,7 +8,7 @@ const props = defineProps({
 });
 </script>
 <template>
-  <div class="flex flex-col gap-6 absolute top-0 left-0 w-full">
+  <div class="flex flex-col gap-6 w-full">
     <div class="page-header">
       <h4 v-if="props.title" class="text-2xl font-semibold">
         {{ props.title }}

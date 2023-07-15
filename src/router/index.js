@@ -113,17 +113,47 @@ const router = createRouter({
           component: () => import('@/views/member/DetailView.vue')
         },
 
-        //==============accounts================
+        //==============workout-users================
         {
           path: '/workout-users',
           name: 'workout_users.index',
-          component: () => import('@/views/account/workout_users/WorkoutUserView.vue')
+          component: () => import('@/views/account/workout_users/IndexView.vue')
         },
+        //==============creator================
         {
           path: '/creators',
           name: 'creators.index',
-          component: () => import('@/views/account/creators/CreatorView.vue')
-        }
+          component: () => import('@/views/account/creators/IndexView.vue')
+        },
+        {
+          path: '/creators/:id',
+          name: 'creators.show',
+          component: () => import('@/views/account/creators/DetailView.vue')
+        },
+        //==============personal trainer================
+        {
+          path: '/personal-trainers',
+          name: 'personal_trainers.index',
+          component: () => import('@/views/account/personal_trainers/IndexView.vue')
+        },
+        {
+          path: '/personal-trainers/:id',
+          name: 'personal_trainers.show',
+          component: () => import('@/views/account/personal_trainers/DetailView.vue')
+        },
+        //==============profile================
+        {
+          path: '/profile',
+          name: 'profile.index',
+          component: () => import('@/views/profile/IndexView.vue')
+        },
+
+        //==============profile================
+        {
+          path: '/tags',
+          name: 'tags.index',
+          component: () => import('@/views/tag/IndexView.vue')
+        },
       ]
     },
     {
