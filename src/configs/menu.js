@@ -16,24 +16,24 @@ export const appMenu = [
     role: ['admin', 'superAdmin'],
     items: [
       {
-        label: 'Creators',
-        icon: 'pi pi-fw pi-users',
-        to: '/creators',
-        role: ['admin', 'superAdmin']
-      },
-      {
         label: 'Workout Users',
         icon: 'pi pi-fw pi-users',
         to: '/workout-users',
         role: ['admin', 'superAdmin']
       },
       {
-        label: 'PT Request',
+        label: 'Creators',
         icon: 'pi pi-fw pi-users',
-        to: '/personal-trainers',
+        to: '/creators',
         role: ['admin', 'superAdmin']
       },
 
+      {
+        label: 'Personal Trainers',
+        icon: 'pi pi-fw pi-users',
+        to: '/personal-trainers',
+        role: ['admin', 'superAdmin']
+      }
     ]
   },
   {
@@ -105,7 +105,7 @@ export const appMenu = [
         icon: 'pi pi-fw pi-images',
         to: '/muscles',
         role: ['creator']
-      },
+      }
     ]
   },
   {

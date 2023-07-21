@@ -4,14 +4,10 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Avatar from 'primevue/avatar';
 import { FilterMatchMode } from 'primevue/api';
-import { ref, onMounted } from 'vue';
-import { useCreatorStore } from '@/stores/creator';
+import { ref } from 'vue';
 
-const store = useCreatorStore();
+defineProps(['datatable']);
 
-onMounted(async () => {
-  await store.getPersonalTrainers();
-});
 const getSeverityTypeWork = (typeWork) => {
   switch (typeWork) {
     case 'freelancer':
@@ -35,7 +31,7 @@ const genderOptions = ref(['male', 'female']);
 const typeWorkOptions = ref(['freelancer', 'GYM']);
 </script>
 <template>
-  <base-view title="List Personal Trainer">
+  <base-view title=" List Personal Trainer Request">
     <div class="card space-y-6 min-h-full">
       <Toolbar>
         <template #end>
@@ -47,7 +43,7 @@ const typeWorkOptions = ref(['freelancer', 'GYM']);
       </Toolbar>
       <DataTable
         v-model:filters="filters"
-        :value="store.listPersonalTrainers"
+        :value="datatable"
         tableStyle="min-width: 50rem"
         stripedRows
         scrollable
@@ -138,7 +134,7 @@ const typeWorkOptions = ref(['freelancer', 'GYM']);
             </Dropdown>
           </template>
         </Column>
-        <Column field="verified_at" header="Verified At" style="min-width: 150px" sortable> </Column>
+        <Column field="updated_at" header="Updated At" style="min-width: 150px" sortable> </Column>
         <Column>
           <template #body="{ data }">
             <div class="flex space-x-4">
@@ -148,7 +144,7 @@ const typeWorkOptions = ref(['freelancer', 'GYM']);
                 icon="pi pi-angle-right"
                 iconPos="right"
                 outlined
-                @click="$router.push({ name: 'personal_trainers.show', params: { id: data.id } })"
+                @click="$router.push({ name: 'creators.request-pt.show', params: { id: data.id } })"
               />
             </div>
           </template>

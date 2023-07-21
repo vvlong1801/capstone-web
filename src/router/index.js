@@ -126,9 +126,9 @@ const router = createRouter({
           component: () => import('@/views/account/creators/IndexView.vue')
         },
         {
-          path: '/creators/:id',
-          name: 'creators.show',
-          component: () => import('@/views/account/creators/DetailView.vue')
+          path: '/creators/request-pt/:id',
+          name: 'creators.request-pt.show',
+          component: () => import('@/views/account/creators/RequestDetailView.vue')
         },
         //==============personal trainer================
         {
@@ -152,7 +152,7 @@ const router = createRouter({
         {
           path: '/tags',
           name: 'tags.index',
-          component: () => import('@/views/tag/IndexView.vue')
+          component: () => import('@/views/tags/IndexView.vue')
         },
       ]
     },

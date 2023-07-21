@@ -44,7 +44,6 @@ const validationSchema = Yup.object({
   address: Yup.string(),
   facebook: Yup.string(),
   workout_training_media: Yup.array().required(),
-  certificate: Yup.object(),
   certificate_issuer: Yup.number(),
   work_type: Yup.string().required(),
   techniques: Yup.array().min(1).required(),
@@ -57,6 +56,7 @@ const profileForm = ref({});
 
 const fileService = useFile();
 const store = useProfileStore();
+
 onMounted(async () => {
   await store.getProfile();
   await store.getIssuers();
@@ -130,11 +130,11 @@ const onRemoveWorkoutMedia = (index) => {
       <Toast />
       <div class="card">
         <div class="flex gap-8 mt-4">
-          <VeeField name="user.avatar" v-slot="{ value, handleChange, errorMessage }">
+          <VeeField name="user.avatar" v-slot="{ value }">
             <div class="w-1/4 flex flex-col items-center">
               <div
                 class="bg-slate-300 rounded-full w-60 h-60 flex justify-center items-center"
-                v-if="store.form?.user.avatar == null"
+                v-if="value == null"
               >
                 <img src="@/assets/images/user-solid-white.svg" class="w-32 h-32" />
               </div>
@@ -252,7 +252,7 @@ const onRemoveWorkoutMedia = (index) => {
           <i class="pi pi-verified !text-green-500 !text-lg"></i>
         </div>
         <div class="flex gap-4">
-          <VeeField name="certificate" v-slot="{ value, errorMessage }">
+          <VeeField name="certificate" v-slot="{ value }">
             <div class="w-1/3 pr-4">
               <div class="w-full h-80 bg-slate-100 mb-8">
                 <Image alt="Image" preview class="w-full h-full" v-if="value?.url">
@@ -285,7 +285,7 @@ const onRemoveWorkoutMedia = (index) => {
               </file-upload>
             </div>
           </VeeField>
-          <VeeField name="workout_training_media" v-slot="{ value, handleChange, errorMessage }">
+          <VeeField name="workout_training_media" v-slot="{ value}">
             <div class="w-2/3">
               <div class="w-full h-80 bg-slate-100 mb-8 grid grid-cols-4 grid-rows-2 gap-4">
                 <template v-if="value.length">
@@ -333,11 +333,11 @@ const onRemoveWorkoutMedia = (index) => {
           <VeeField
             as="div"
             name="certificate_issuer"
-            v-slot="{ field, handleChange, errorMessage }"
+            v-slot="{ value, handleChange, errorMessage }"
           >
             <div class="p-float-label">
               <Dropdown
-                :model-value="field.value?.id"
+                :model-value="value"
                 @update:model-value="handleChange"
                 :options="store.issuerOptions"
                 optionLabel="name"
@@ -381,12 +381,12 @@ const onRemoveWorkoutMedia = (index) => {
           <VeeField
             as="div"
             name="techniques"
-            v-slot="{ field, handleChange, errorMessage }"
+            v-slot="{ value, handleChange, errorMessage }"
             class="col-span-3"
           >
             <div class="p-float-label">
               <MultiSelect
-                :model-value="field.value.map((item) => item.id)"
+                :model-value="value"
                 @update:model-value="handleChange"
                 display="chip"
                 :options="store.techniqueOptions"

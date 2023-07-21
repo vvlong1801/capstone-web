@@ -16,9 +16,9 @@ console.log(authStore.userInfo.id);
 window.Echo.private(`App.Models.User.${authStore.userInfo.id}`).notification((notification) => {
   console.log(notification);
   toast.add({
-    severity: 'info',
-    summary: notification.challenge_name,
-    detail: notification.message,
+    severity: notification.severity,
+    summary: notification.summary,
+    detail: notification.detail,
     group: 'notify'
   });
 });
