@@ -4,21 +4,32 @@ import Button from 'primevue/button';
 import Chips from 'primevue/chips';
 import Avatar from 'primevue/avatar';
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCreatorStore } from '@/stores/creator';
 
 const store = useCreatorStore();
 
 const requestData = ref({ user: { email: '', name: '', phone_number: '' } });
 const route = useRoute();
+const router = useRouter();
 
 const workTypeOptions = ['GYM', 'freelancer'];
 
 const genderOptions = ['male', 'female'];
 
 onMounted(async () => {
-  requestData.value = await store.getPersonalTrainerById(route.params.id);
+  requestData.value = await store.getPersonalTrainerRequestById(route.params.id);
 });
+
+const onAccept = async () => {
+  await store.verifyPersonalTrainer(route.params.id, true);
+  router.push('/creators');
+}
+
+const onUnAccept = async () => {
+  await store.verifyPersonalTrainer(route.params.id, false);
+  router.push('/creators');
+}
 
 </script>
 <template>
@@ -208,6 +219,23 @@ onMounted(async () => {
           class="!mr-8"
           @click="$router.push('/creators')"
         />
+        <div class="flex">
+          <Button
+            label="UnAccept"
+            icon="pi pi-times"
+            iconPos="right"
+            severity="warning"
+            class="!mr-8"
+            @click="onUnAccept"
+          />
+          <Button
+            label="Accept"
+            icon="pi pi-check"
+            iconPos="right"
+            severity="success"
+            @click="onAccept"
+          />
+        </div>
       </div>
     </div>
   </base-view>

@@ -15,3 +15,10 @@ export const setAxiosBaseUrl = (role) => {
     console.log('role creator');
   }
 };
+
+// export const formatDate = (input) => {
+//   let date = moment(input);
+//   let formattedDate = date.format('DD/MM/YYYY');
+
+//   return formattedDate;
+// }

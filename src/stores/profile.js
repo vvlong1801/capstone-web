@@ -13,9 +13,10 @@ export const useProfileStore = defineStore('profile', () => {
 
   const getProfile = async () => {
     try {
-      console.log('getProfile');
       const res = await ProfileAPI.onGetProfile();
       form.value = res.data;
+      form.value.techniques = form.value.techniques.map((te) => te.id);
+      form.value.certificate_issuer = form.value.certificate_issuer.id;
       authStore.userInfo = form.value.user;
     } catch (error) {
       console.log(error);

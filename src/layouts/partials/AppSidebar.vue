@@ -1,7 +1,7 @@
 <script setup>
 import AppMenu from './AppMenu.vue';
 import Avatar from 'primevue/avatar';
-import Rating from 'primevue/Rating';
+import Rating from 'primevue/rating';
 import { useAuthStore } from '@/stores/auth/auth';
 import { ref } from 'vue';
 const authStore = useAuthStore();
