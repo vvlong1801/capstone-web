@@ -7,6 +7,7 @@ import Avatar from 'primevue/avatar';
 import { onMounted, ref } from 'vue';
 import { useFile } from '@/composables/file.js';
 import { useProfileStore } from '@/stores/profile';
+import { useAuthStore } from '@/stores/auth/auth';
 import { Form as VeeForm, Field as VeeField } from 'vee-validate';
 import * as Yup from 'yup';
 
@@ -56,6 +57,7 @@ const profileForm = ref({});
 
 const fileService = useFile();
 const store = useProfileStore();
+const authStore = useAuthStore();
 
 onMounted(async () => {
   await store.getProfile();
@@ -249,7 +251,7 @@ const onRemoveWorkoutMedia = (index) => {
       <div class="card mt-8 h-fit space-y-8">
         <div class="flex items-center mb-8">
           <p class="mr-4 text-lg font-medium">Personal Trainer</p>
-          <i class="pi pi-verified !text-green-500 !text-lg"></i>
+          <i class="pi pi-verified !text-green-500 !text-lg" v-if="authStore.creatorInfo.is_PT"></i>
         </div>
         <div class="flex gap-4">
           <VeeField name="certificate" v-slot="{ value }">
@@ -281,11 +283,12 @@ const onRemoveWorkoutMedia = (index) => {
                 @uploader="handleUploadCertificate"
                 accept="image/*"
                 choose-label="Upload certificate"
+                v-if="!authStore.creatorInfo.is_PT"
               >
               </file-upload>
             </div>
           </VeeField>
-          <VeeField name="workout_training_media" v-slot="{ value}">
+          <VeeField name="workout_training_media" v-slot="{ value }">
             <div class="w-2/3">
               <div class="w-full h-80 bg-slate-100 mb-8 grid grid-cols-4 grid-rows-2 gap-4">
                 <template v-if="value.length">
@@ -324,6 +327,7 @@ const onRemoveWorkoutMedia = (index) => {
                 custom-upload
                 accept="image/*"
                 choose-label="Upload image workout training"
+                v-if="!authStore.creatorInfo.is_PT"
               >
               </file-upload>
             </div>
@@ -491,6 +495,7 @@ const onRemoveWorkoutMedia = (index) => {
               icon="pi pi-cloud-upload"
               icon-pos="right"
               @click="handleSubmit($event, onRequest)"
+              v-if="!authStore.creatorInfo.is_PT"
             />
           </div>
         </div>

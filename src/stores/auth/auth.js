@@ -8,6 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
   const accessToken = useStorage('access_token', '');
   const userInfo = useStorage('user_info', {});
+  const creatorInfo = useStorage('creator_info', {});
 
   const check = computed(() => !!accessToken.value);
   const isAdmin = computed(
@@ -20,11 +21,14 @@ export const useAuthStore = defineStore('auth', () => {
     window.axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`;
   }
 
-  function login(accessToken, user) {
+  function login(accessToken, data) {
     setAccessToken(accessToken);
-    userInfo.value = user;
+    userInfo.value = data.user_info;
+    if (data.creator_info != undefined) {
+      creatorInfo.value = data.creator_info;
+    }
 
-    setAxiosBaseUrl(user.role);
+    setAxiosBaseUrl(data.user_info.role);
     router.push({ name: 'dashboard' });
   }
 
@@ -38,7 +42,8 @@ export const useAuthStore = defineStore('auth', () => {
       .post('logout')
       .then(() => {
         console.log('logout success');
-        localStorage.setItem('user_info', {});
+        localStorage.removeItem('user_info');
+        localStorage.removeItem('creator_info');
         destroyTokenAndRedirectTo('login');
         setAxiosBaseUrl('creator');
       })
@@ -55,6 +60,7 @@ export const useAuthStore = defineStore('auth', () => {
     destroyTokenAndRedirectTo,
     isAdmin,
     isSuperAdmin,
-    userInfo
+    userInfo,
+    creatorInfo,
   };
 });

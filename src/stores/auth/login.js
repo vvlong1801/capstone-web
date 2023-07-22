@@ -30,7 +30,7 @@ export const useLoginStore = defineStore('login', () => {
     return window.axios
       .post(`${import.meta.env.VITE_BASE_URL}/creator/login`, form)
       .then((res) => {
-        auth.login(res?.data.access_token, res.data.user_info);
+        auth.login(res?.data.access_token, res.data);
       })
       .catch((err) => {
         toast.add({

@@ -2,6 +2,7 @@
 import FileUpload from 'primevue/fileupload';
 import InputSwitch from 'primevue/inputswitch';
 import InputNumber from 'primevue/inputnumber';
+import SelectButton from 'primevue/selectbutton';
 import AutoComplete from 'primevue/autocomplete';
 import Calendar from 'primevue/calendar';
 
@@ -11,6 +12,7 @@ import { Form as VeeForm, Field as VeeField } from 'vee-validate';
 import * as Yup from 'yup';
 import { useChallengeStore } from '@/stores/challenge';
 import { useFile } from '@/composables/file';
+import { GENDER } from '@/utils/option';
 
 const router = useRouter();
 const stepOne = ref({});
@@ -25,6 +27,7 @@ const initForm = {
   public: true,
   create_group: false,
   max_members: 10,
+  for_gender: GENDER[0].value,
   tags: [],
   invitation: [],
   accept_all: true,
@@ -39,7 +42,8 @@ const validationSchema = Yup.object({
   public: Yup.boolean(),
   create_group: Yup.boolean(),
   max_members: Yup.number().nullable(),
-  tags: Yup.array(),
+  for_gender: Yup.string().required(),
+  tags: Yup.array().nullable(),
   template: Yup.object(),
   invitation: Yup.array(),
   images: Yup.array().min(1).required(),
@@ -117,10 +121,10 @@ const onSubmit = (values) => {
           <InputSwitch :model-value="field.value" @update:model-value="handleChange" />
           <label class="text-md font-medium">Public</label>
         </VeeField>
-        <VeeField name="create_group" v-slot="{ field, handleChange }">
+        <!-- <VeeField name="create_group" v-slot="{ field, handleChange }">
           <InputSwitch :model-value="field.value" @update:model-value="handleChange" />
           <label class="text-md font-medium">Create Group</label>
-        </VeeField>
+        </VeeField> -->
       </div>
     </div>
     <div class="flex gap-8 w-full">
@@ -218,6 +222,30 @@ const onSubmit = (values) => {
             />
             <label for="max-members">Max members</label>
           </span>
+          <span class="text-xs ml-2 text-red-500" v-if="errorMessage">{{ errorMessage }}</span>
+        </VeeField>
+        <VeeField
+          name="for_gender"
+          v-model="store.form.for_gender"
+          v-slot="{ value, handleChange, errorMessage }"
+          as="div"
+        >
+          <SelectButton
+            :model-value="value"
+            @update:model-value="handleChange"
+            dataKey="value"
+            optionValue="value"
+            :options="GENDER"
+            aria-labelledby="multiple"
+            class="grid grid-cols-3"
+          >
+            <template #option="slotProps">
+              <div class="flex items-center justify-center w-full">
+                <p class="capitalize">{{ slotProps.option.label }}</p>
+              </div>
+            </template>
+          </SelectButton>
+
           <span class="text-xs ml-2 text-red-500" v-if="errorMessage">{{ errorMessage }}</span>
         </VeeField>
         <VeeField

@@ -51,14 +51,14 @@ defineProps(['challenge']);
               aria-label="actions"
               @click="deleteChallenge(challenge.id)"
             />
-            <Button
+            <!-- <Button
               icon="pi pi-share-alt"
               severity="secondary"
               rounded
               text
               size="small"
               aria-label="actions"
-            />
+            /> -->
           </div>
           <Button
             label="Detail"

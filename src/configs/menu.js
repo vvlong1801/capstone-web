@@ -55,7 +55,7 @@ export const appMenu = [
       {
         label: 'Session Result',
         icon: 'pi pi-fw pi-ticket',
-        to: '/invitations',
+        to: '/session-results',
         role: ['creator']
       }
     ]
