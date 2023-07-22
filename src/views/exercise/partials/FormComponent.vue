@@ -7,7 +7,7 @@ import FileUpload from 'primevue/fileupload';
 import SelectButton from 'primevue/selectbutton';
 import AutoComplete from 'primevue/autocomplete';
 
-import { EVALUATE_METHOD, TYPE_LEVEL } from '@/utils/option';
+import { EVALUATE_METHOD, TYPE_LEVEL, GENDER } from '@/utils/option';
 import { useFile } from '@/composables/file.js';
 
 const props = defineProps({
@@ -77,7 +77,7 @@ const searchGroupTag = (event) => {
             {{ exerciseStore.form.errors.name || '&nbsp;' }}
           </small>
         </div>
-        <div class="col-span-2">
+        <div>
           <SelectButton
             :model-value="exerciseStore.form.values.level"
             @update:model-value="(value) => exerciseStore.form.setFieldValue('level', value)"
@@ -98,48 +98,74 @@ const searchGroupTag = (event) => {
           </small>
         </div>
 
-        <div class="col-span-2">
+        <div>
           <SelectButton
-            :model-value="exerciseStore.form.values.requirement_unit"
-            @update:model-value="
-              (value) => exerciseStore.form.setFieldValue('requirement_unit', value)
-            "
-            :options="EVALUATE_METHOD"
+            :model-value="exerciseStore.form.values.for_gender"
+            @update:model-value="(value) => exerciseStore.form.setFieldValue('for_gender', value)"
+            dataKey="value"
             optionValue="value"
+            :options="GENDER"
             aria-labelledby="multiple"
             class="grid grid-cols-3"
           >
             <template #option="slotProps">
               <div class="flex items-center justify-center w-full">
-                <i class="mr-2" :class="`pi ${slotProps.option.icon}`" />
                 <p class="capitalize">{{ slotProps.option.label }}</p>
               </div>
             </template>
           </SelectButton>
-          <small class="p-error" id="text-error" v-if="checkValidate('requirement_unit')">
-            {{ exerciseStore.form.errors.requirement_unit || '&nbsp;' }}
+          <small class="p-error" id="text-error" v-if="checkValidate('level')">
+            {{ exerciseStore.form.errors.level || '&nbsp;' }}
           </small>
         </div>
-        <div class="col-span-2">
-          <div class="p-inputgroup flex-1">
-            <div class="p-float-label">
-              <InputText
-                id="requirement_initial"
-                :model-value="exerciseStore.form.values.requirement_initial"
-                @update:model-value="
-                  (value) => exerciseStore.form.setFieldValue('requirement_initial', value)
-                "
-                class="w-full"
-                inputId="requirement_initial"
-              />
-              <label for="requirement_initial">Init Value For Type</label>
-            </div>
-            <span class="p-inputgroup-addon">{{ exerciseStore.form.values.requirement_unit }}</span>
+
+        <div class="col-span-2 flex gap-6">
+          <div class="flex-1">
+            <SelectButton
+              :model-value="exerciseStore.form.values.requirement_unit"
+              @update:model-value="
+                (value) => exerciseStore.form.setFieldValue('requirement_unit', value)
+              "
+              :options="EVALUATE_METHOD"
+              optionValue="value"
+              aria-labelledby="multiple"
+              class="grid grid-cols-2"
+            >
+              <template #option="slotProps">
+                <div class="flex items-center justify-center w-full">
+                  <i class="mr-2" :class="`pi ${slotProps.option.icon}`" />
+                  <p class="capitalize">{{ slotProps.option.label }}</p>
+                </div>
+              </template>
+            </SelectButton>
+            <small class="p-error" id="text-error" v-if="checkValidate('requirement_unit')">
+              {{ exerciseStore.form.errors.requirement_unit || '&nbsp;' }}
+            </small>
           </div>
-          <small class="p-error" id="text-error" v-if="checkValidate('requirement_initial')">
-            {{ exerciseStore.form.errors.requirement_initial || '&nbsp;' }}
-          </small>
+          <div class="flex-1">
+            <div class="p-inputgroup flex-1">
+              <div class="p-float-label">
+                <InputText
+                  id="requirement_initial"
+                  :model-value="exerciseStore.form.values.requirement_initial"
+                  @update:model-value="
+                    (value) => exerciseStore.form.setFieldValue('requirement_initial', value)
+                  "
+                  class="w-full"
+                  inputId="requirement_initial"
+                />
+                <label for="requirement_initial">Init value for type</label>
+              </div>
+              <span class="p-inputgroup-addon">{{
+                exerciseStore.form.values.requirement_unit
+              }}</span>
+            </div>
+            <small class="p-error" id="text-error" v-if="checkValidate('requirement_initial')">
+              {{ exerciseStore.form.errors.requirement_initial || '&nbsp;' }}
+            </small>
+          </div>
         </div>
+
         <div class="flex-col">
           <div class="p-float-label">
             <MultiSelect

@@ -113,6 +113,13 @@ const router = createRouter({
           component: () => import('@/views/member/DetailView.vue')
         },
 
+        //==============session results================
+        {
+          path: '/session-results',
+          name: 'session_results.index',
+          component: () => import('@/views/member/IndexView.vue')
+        },
+
         //==============workout-users================
         {
           path: '/workout-users',

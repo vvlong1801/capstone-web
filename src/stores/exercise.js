@@ -4,7 +4,7 @@ import { useToast } from 'primevue/usetoast';
 import { useRouter } from 'vue-router';
 import { useForm } from 'vee-validate';
 import * as Yup from 'yup';
-import { TYPE_LEVEL, EVALUATE_METHOD, getOption } from '@/utils/option';
+import { TYPE_LEVEL, EVALUATE_METHOD,GENDER, getOption } from '@/utils/option';
 import { ExerciseAPI } from '@/services';
 
 export const useExerciseStore = defineStore('exercise', () => {
@@ -20,6 +20,7 @@ export const useExerciseStore = defineStore('exercise', () => {
   const validationSchema = Yup.object({
     name: Yup.string().required(),
     level: Yup.string().required(),
+    for_gender: Yup.string().required(),
     requirement_unit: Yup.string().required(),
     requirement_initial: Yup.string().required(),
     group_tags: Yup.array(),
@@ -35,6 +36,7 @@ export const useExerciseStore = defineStore('exercise', () => {
   const initialValues = {
     name: '',
     level: TYPE_LEVEL[0].value,
+    for_gender: GENDER[0].value,
     type: null,
     requirement_unit: EVALUATE_METHOD[0].value,
     requirement_initial: '',

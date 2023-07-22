@@ -1,19 +1,20 @@
 const EVALUATE_METHOD = [
   {
-    label: 'Count Rep',
+    label: 'Rep',
     value: 'reps',
     icon: 'pi-bolt'
   },
   {
-    label: 'Count Time',
-    value: 'times',
+    label: 'Second',
+    value: 'seconds',
     icon: 'pi-clock'
-  },
-  {
-    label: 'Distance',
-    value: 'meters',
-    icon: 'pi-arrows-h'
   }
+];
+
+const GENDER = [
+  { label: 'All', value: 'all', severity: 'success' },
+  { label: 'Male', value: 'male', severity: 'success' },
+  { label: 'Female', value: 'female', severity: 'success' }
 ];
 
 const TYPE_LEVEL = [
@@ -53,4 +54,4 @@ function getSeverity(optionData, value) {
   return null;
 }
 
-export { EVALUATE_METHOD, TYPE_LEVEL, STATUS, getOption, getIcon, getLabel, getSeverity };
+export { EVALUATE_METHOD, TYPE_LEVEL, STATUS, GENDER, getOption, getIcon, getLabel, getSeverity };

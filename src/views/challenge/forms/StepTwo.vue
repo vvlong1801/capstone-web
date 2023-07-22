@@ -27,11 +27,12 @@ const stepTwoData = reactive({
 });
 const store = useChallengeStore();
 
-onMounted(() => {
-  if (store.form.template) {
-    Object.assign(stepTwoData, store.form.template);
-  }
-});
+Object.assign(stepTwoData, store.form.template);
+// onMounted(() => {
+//   if (store.form.template) {
+//     Object.assign(stepTwoData, store.form.template);
+//   }
+// });
 
 watch(stepTwoData, (newValue) => {
   store.form.template = newValue;

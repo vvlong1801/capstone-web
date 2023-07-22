@@ -3,23 +3,29 @@ import ExerciseCard from '../../exercise/partials/ExerciseCard.vue';
 import { defineProps, defineEmits, onMounted, ref, computed } from 'vue';
 import { useExerciseStore } from '@/stores/exercise';
 import Draggable from 'vuedraggable';
+import { GENDER } from '@/utils/option';
 
 const props = defineProps(['visible', 'exercises']);
 
 const emits = defineEmits(['update:visible', 'update:exercises']);
 const store = useExerciseStore();
 const dragging = ref(false);
-
+const levelFilter = ref('');
+const genderFilter = ref('all');
+console.log(props.exercises);
 const destinations = ref([]);
-onMounted(async () => {
-  // await store.getExercises();
+onMounted(() => {
+  console.log("dialog mounted",destinations.value, props.exercises);
   destinations.value = props.exercises;
 });
 
 const sources = computed(() =>
   store.exercises.filter((item) => {
     let result = destinations.value.filter((des) => des.id === item.id);
-    return result.length > 0 ? false : true;
+    let inDestinations = result.length > 0;
+    let inLevel = levelFilter.value == '' || item.level.value == levelFilter.value;
+    let inGender = genderFilter.value == 'all' || item.for_gender == genderFilter.value;
+    return !inDestinations && inLevel && inGender;
   })
 );
 
@@ -33,6 +39,25 @@ const onSave = () => {
   emits('update:exercises', destinations.value);
   emits('update:visible', false);
 };
+
+const levelOptions = [
+  {
+    label: 'All',
+    value: ''
+  },
+  {
+    label: 'Easy',
+    value: 'easy'
+  },
+  {
+    label: 'Middle',
+    value: 'middle'
+  },
+  {
+    label: 'Hard',
+    value: 'hard'
+  }
+];
 </script>
 <template>
   <Dialog
@@ -48,7 +73,24 @@ const onSave = () => {
         <div class="sticky top-0 left-0 z-10">
           <Toolbar>
             <template #start>
-              <Button icon="pi pi-plus" class="mr-2" rounded />
+              <div class="flex gap-4">
+                <Dropdown
+                  v-model="levelFilter"
+                  :options="levelOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select level"
+                  class="w-full md:w-14rem"
+                />
+                <Dropdown
+                  v-model="genderFilter"
+                  :options="GENDER"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select gender"
+                  class="w-full md:w-14rem"
+                />
+              </div>
             </template>
 
             <template #end>
