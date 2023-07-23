@@ -8,17 +8,19 @@ import Inplace from 'primevue/inplace';
 import OverlayPanel from 'primevue/overlaypanel';
 import Dialog from 'primevue/dialog';
 import StepOne from './forms/StepOne.vue';
+import MemberView from './detail/MemberView.vue'
+import FeedbackView from './detail/FeedbackView.vue'
 
 import { useConfirm } from 'primevue/useconfirm';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useChallengeStore } from '@/stores/challenge';
 import { useAuthStore } from '@/stores/auth/auth';
-import { useToast } from 'primevue/usetoast';
+// import { useToast } from 'primevue/usetoast';
 
 const route = useRoute();
 const store = useChallengeStore();
-const toast = useToast();
+// const toast = useToast();
 
 const { isSuperAdmin } = useAuthStore();
 const confirm = useConfirm();
@@ -322,7 +324,7 @@ const onUnApprove = () => {};
                 <i class="pi pi-users"></i>
                 <p class="ml-2">Members</p>
               </template>
-              <div></div>
+              <member-view />
             </TabPanel>
           </TabView>
         </div>
@@ -330,7 +332,7 @@ const onUnApprove = () => {};
       <div class="card w-2/5 space-y-6 min-h-full" v-if="!isSuperAdmin">
         <TabView>
           <TabPanel header="Feedback">
-            <p></p>
+            <feedback-view />
           </TabPanel>
           <TabPanel header="Result Workout">
             <p></p>

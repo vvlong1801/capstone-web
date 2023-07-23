@@ -29,4 +29,13 @@ export const onGetChallenges = async () => {
   export const onDeleteChallenge = async (id) => {
     return await window.axios.delete(`challenges/${id}`);
   };
+
+  // detail
+  export const fetchChallengeFeedbacks = async () => {
+    // return await window.axios.delete(`challenges/${id}/feedback`);
+    return [
+      { id: 1, image: '', name: 'longvv', feedback: 'So good', createdAt: new Date(Date.now()).toLocaleString()},
+      { id: 2, image: '', name: 'long2', feedback: 'Perfect! I want to learn more', createdAt: new Date(Date.now()).toLocaleString()},
+    ]
+  };
   
