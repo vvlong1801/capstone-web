@@ -32,7 +32,7 @@ const showExpand = ref(false);
         <div class="flex justify-between items-center">
           <div class="flex items-center justify-between w-full">
             <slot name="info">
-              <Tag :severity="exercise.level.severity" :value="exercise.level.label" />
+              <Tag :severity="exercise.level?.severity" :value="exercise.level?.label" />
               <p class="font-normal text-sm text-gray-500">
                 {{ exercise.created_by }}
               </p>

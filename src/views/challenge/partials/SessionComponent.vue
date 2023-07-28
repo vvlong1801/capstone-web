@@ -3,13 +3,12 @@ import SessionDialog from './SessionDialog.vue';
 import { defineProps, defineEmits, ref, onMounted } from 'vue';
 import { useExerciseStore } from '@/stores/exercise';
 
-const props = defineProps(['sessionName', 'exercises', 'descriptions', 'edit']);
+defineProps(['sessionName', 'exercises', 'descriptions', 'edit']);
 defineEmits(['update:exercises', 'update:descriptions']);
 
 const exerciseStore = useExerciseStore();
 
 const openDialog = ref(false);
-console.log('session component', props.exercises);
 
 onMounted(exerciseStore.getExercises);
 </script>

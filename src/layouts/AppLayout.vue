@@ -2,10 +2,10 @@
 import AppTopbar from './partials/AppTopbar.vue';
 import AppSidebar from './partials/AppSidebar.vue';
 import { RouterView } from 'vue-router';
-import { useStorage } from '@vueuse/core';
 import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth/auth';
+import { useStorage } from '@vueuse/core';
 const showSideBar = useStorage('showSideBar', true);
 const newChallengeId = ref();
 

@@ -12,10 +12,8 @@ const store = useExerciseStore();
 const dragging = ref(false);
 const levelFilter = ref('');
 const genderFilter = ref('all');
-console.log(props.exercises);
 const destinations = ref([]);
 onMounted(() => {
-  console.log("dialog mounted",destinations.value, props.exercises);
   destinations.value = props.exercises;
 });
 
