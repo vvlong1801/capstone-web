@@ -5,7 +5,7 @@ import Inplace from 'primevue/inplace';
 import OverlayPanel from 'primevue/overlaypanel';
 import InputNumber from 'primevue/inputnumber';
 
-import { ref, reactive, watch, onMounted } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChallengeStore } from '@/stores/challenge';
 
@@ -28,11 +28,6 @@ const stepTwoData = reactive({
 const store = useChallengeStore();
 
 Object.assign(stepTwoData, store.form.template);
-// onMounted(() => {
-//   if (store.form.template) {
-//     Object.assign(stepTwoData, store.form.template);
-//   }
-// });
 
 watch(stepTwoData, (newValue) => {
   store.form.template = newValue;

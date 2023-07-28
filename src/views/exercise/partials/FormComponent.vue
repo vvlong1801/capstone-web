@@ -347,7 +347,7 @@ const searchGroupTag = (event) => {
           <Textarea
             :model-value="exerciseStore.form.values.description"
             @update:model-value="(value) => exerciseStore.form.setFieldValue('description', value)"
-            rows="10"
+            rows="54"
             class="w-full"
             inputId="description"
           />

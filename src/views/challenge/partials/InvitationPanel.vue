@@ -1,39 +1,52 @@
 <script setup>
 import InputSwitch from 'primevue/inputswitch';
 import DataTable from 'primevue/datatable';
+import Message from 'primevue/message';
+import Column from 'primevue/column';
 import Avatar from 'primevue/avatar';
 import AutoComplete from 'primevue/autocomplete';
-import Column from 'primevue/column';
-import { ref, watch, onMounted, computed } from 'vue';
-import { useChallengeStore } from '@/stores/challenge';
+import { ref, computed, watch, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
-
-const userStore = useUserStore();
-const challengeStore = useChallengeStore();
-
-onMounted(() => {
-  if (challengeStore.form.invitation === undefined) {
-    challengeStore.form.invitation = [];
+import { useAuthStore } from '@/stores/auth/auth';
+const { isSuperAdmin } = useAuthStore();
+const props = defineProps({
+  invitations: {
+    default: []
+  },
+  acceptAll: {
+    default: true
+  },
+  members: {
+    default: []
   }
 });
 
-const roles = ['Member', 'SubAdmin'];
-
-const acceptAll = ref(true);
-const selectingRole = ref('Member');
-const selectingMember = ref({});
-const datatableSearchKey = ref('');
+const emits = defineEmits(['update']);
+const userStore = useUserStore();
+const addError = ref(false);
+const messageError = ref('');
 
 const globalSearchKey = ref('');
 const globalSearchOptions = ref([]);
+const selectingRole = ref('Member');
+const selectingMember = ref({});
+const datatableSearchKey = ref('');
+const datatable = ref([]);
+const acceptAllRef = ref(true);
+
+watchEffect(() => {
+  datatable.value = props.invitations;
+  acceptAllRef.value = props.acceptAll;
+});
 
 const onSearch = async () => {
   await userStore.getUsersByKeyWord(globalSearchKey.value);
   globalSearchOptions.value = userStore.users;
 };
+const roles = ['Member', 'SubAdmin'];
 
 const datatableAfterSearch = computed(() => {
-  return challengeStore.form.invitation?.filter((item) => {
+  return datatable.value?.filter((item) => {
     return (
       item.email.toLowerCase().includes(datatableSearchKey.value.toLowerCase()) ||
       item.phone_number.toLowerCase().includes(datatableSearchKey.value.toLowerCase()) ||
@@ -43,6 +56,12 @@ const datatableAfterSearch = computed(() => {
   });
 });
 
+const onSelect = ({ value: selectedOption }) => {
+  selectedOption.role = selectingRole.value;
+  selectedOption.canDelete = true;
+  selectingMember.value = selectedOption;
+};
+
 watch(selectingRole, () => {
   if (selectingMember.value) {
     selectingMember.value.role = selectingRole.value;
@@ -51,50 +70,55 @@ watch(selectingRole, () => {
   }
 });
 
-const onSelect = ({ value: selectedOption }) => {
-  selectedOption.role = selectingRole.value;
-  selectingMember.value = selectedOption;
-  console.log(selectingMember.value);
-};
-
 const onAddToDatabase = () => {
+  let memberFiltered = props.members.filter((item) => selectingMember.value.id === item.id);
+  if (memberFiltered.length > 0) {
+    addError.value = true;
+    messageError.value = 'user has been member';
+    return;
+  }
   if (selectingMember.value !== undefined && selectingMember.value.name !== undefined) {
-    let filtered = challengeStore.form.invitation.filter(
-      (item) =>
-        item.email === selectingMember.value.email && item.role === selectingMember.value.role
-    );
+    let filtered = datatable.value.filter((item) => item.id === selectingMember.value.id);
     if (filtered.length > 0) {
-      console.log('existed');
+      addError.value = true;
+      messageError.value = 'user existed on under table';
     } else {
-      challengeStore.form.invitation = [...challengeStore.form.invitation, selectingMember.value];
+      datatable.value = [...datatable.value, selectingMember.value];
       selectingMember.value = {};
       globalSearchKey.value = '';
+      addError.value = false;
     }
   }
 };
 
 const onDelete = (index) => {
-  challengeStore.form.invitation.splice(index, 1);
+  if (datatable.value[index].canDelete) {
+    datatable.value.splice(index, 1);
+  }
 };
 
-const onSubmit = () => {
-  challengeStore.createChallenge();
+const onSave = () => {
+  let newInvitations = datatable.value.slice(props.invitations.length);
+
+  emits('update', { accept_all: acceptAllRef.value, invitations: newInvitations });
+};
+
+const onCloseMessage = () => {
+  addError.value = false;
+  messageError.value = '';
 };
 </script>
 <template>
   <div class="flex flex-col gap-8">
-    <Toast />
-    <div class="flex justify-between items-center">
-      <div>
-        <h1 class="text-lg font-semibold">Send Invitation</h1>
-        <h3 class="text-sm p-text-secondary">Send join challenge invitation by email</h3>
-      </div>
+    <Message severity="error" v-if="addError" @close="onCloseMessage">{{ messageError }}</Message>
+    <div class="flex justify-between">
       <div class="flex items-center">
-        <InputSwitch v-model="acceptAll" />
+        <InputSwitch v-model="acceptAllRef" />
         <p class="ml-4 font-semibold">Accept All</p>
       </div>
+      <Button icon="pi pi-check" label="Save" severity="warning" @click="onSave"></Button>
     </div>
-    <div class="flex space-x-6 w-full">
+    <div class="flex space-x-6 w-full" v-if="!isSuperAdmin">
       <AutoComplete
         v-model="globalSearchKey"
         :suggestions="globalSearchOptions"
@@ -157,7 +181,7 @@ const onSubmit = () => {
       <Column field="phone_number" header="Phone Number" class="w-1/4"> </Column>
       <Column field="role" header="Role" class="w-1/4"> </Column>
       <Column class="w-1/6">
-        <template #body="{ index }">
+        <template #body="{ index, data }">
           <Button
             icon="pi pi-trash"
             severity="danger"
@@ -165,18 +189,10 @@ const onSubmit = () => {
             rounded
             aria-label="delete"
             @click="onDelete(index)"
+            v-if="data.canDelete"
           />
         </template>
       </Column>
     </DataTable>
-    <div class="flex justify-between">
-      <Button
-        label="Back"
-        icon="pi pi-arrow-left"
-        severity="secondary"
-        @click="$router.push({ name: 'challenges.create.step_two' })"
-      />
-      <Button label="Submit" icon="pi pi-check" @click="onSubmit" />
-    </div>
   </div>
 </template>

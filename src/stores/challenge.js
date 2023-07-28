@@ -10,6 +10,8 @@ export const useChallengeStore = defineStore('challenge', () => {
   const toast = useToast();
 
   const challenges = ref([]);
+  const feedbacks = ref([]);
+  const comments = ref([]);
   const detailChallenge = ref({ information: {}, template: {} });
   const challengeTypes = ref([]);
   const filtered = ref([]);
@@ -96,6 +98,15 @@ export const useChallengeStore = defineStore('challenge', () => {
     }
   };
 
+  const updateInvitation = (id, data) => {
+    try {
+      const res = ChallengeAPI.onUpdateInvitation(id, data);
+      toast.add({ severity: 'success', summary: 'success', detail: res?.message, life: 3000 });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const approveChallenge = async (id, data) => {
     try {
       const res = await ChallengeAPI.onApproveChallenge(id, data);
@@ -124,6 +135,33 @@ export const useChallengeStore = defineStore('challenge', () => {
     }
   };
 
+  const replyFeedback = async (challengeId, replyId, data) => {
+    try {
+      const res = await ChallengeAPI.onReplyFeedback(challengeId, replyId, data);
+      toast.add({ severity: 'success', summary: 'success', detail: res?.message, life: 3000 });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFeedbacks = async (challengeId) => {
+    try {
+      const res = await ChallengeAPI.onGetFeedbacks(challengeId);
+      feedbacks.value = res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getComments = async (challengeId) => {
+    try {
+      const res = await ChallengeAPI.onGetComments(challengeId);
+      comments.value = res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     challenges,
     challengeTypes,
@@ -137,6 +175,12 @@ export const useChallengeStore = defineStore('challenge', () => {
     createChallenge,
     updateBasicInfo,
     approveChallenge,
-    deleteChallenge
+    updateInvitation,
+    deleteChallenge,
+    replyFeedback,
+    feedbacks,
+    getFeedbacks,
+    getComments,
+    comments
   };
 });

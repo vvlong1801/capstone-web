@@ -2,49 +2,60 @@
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import BaseView from '../BaseView.vue';
-import SessionComponent from './partials/SessionComponent.vue';
-import Panel from 'primevue/panel';
-import Inplace from 'primevue/inplace';
-import OverlayPanel from 'primevue/overlaypanel';
+import TemplatePanel from './partials/TemplatePanel.vue';
+import MemberPanel from './partials/MemberPanel.vue';
+import InvitationPanel from './partials/InvitationPanel.vue';
+import Badge from 'primevue/badge';
+import BasicInfoPanel from './partials/BasicInfoPanel.vue';
+
 import Dialog from 'primevue/dialog';
 import StepOne from './forms/StepOne.vue';
+import FeedbackBox from './partials/detail/FeedbackBox.vue';
+import CommentBox from './partials/detail/CommentBox.vue';
 
 import { useConfirm } from 'primevue/useconfirm';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+
+import { onMounted, ref, computed } from 'vue';
 import { useChallengeStore } from '@/stores/challenge';
 import { useAuthStore } from '@/stores/auth/auth';
-import { useToast } from 'primevue/usetoast';
+import { useRoute } from 'vue-router';
+import { useStorage } from '@vueuse/core';
 
+const showSideBar = useStorage('showSideBar', true);
 const route = useRoute();
 const store = useChallengeStore();
-const toast = useToast();
-
-const { isSuperAdmin } = useAuthStore();
 const confirm = useConfirm();
 
-const editBasicInfo = ref(false);
+const { isSuperAdmin } = useAuthStore();
+
 const editTemplate = ref(false);
 const id = route.params.id;
 
+const feedbackNonReply = computed(() => {
+  let nonReplies = store.feedbacks.filter((item) => item.replies.length == 0);
+  return nonReplies.length;
+});
 onMounted(async () => {
   await store.getChallengeById(id);
   console.log(store.detailChallenge);
 });
 
-const showEditBasicInfo = () => {
+const editBasicInfo = ref(false);
+
+const onShowEditDialog = () => {
   store.form = JSON.parse(JSON.stringify(store.detailChallenge.information));
   editBasicInfo.value = true;
+};
+
+const onCancelBasicInfo = () => {
+  editBasicInfo.value = false;
+  store.form = {};
 };
 
 const onUpdateBasicInfo = async (data) => {
   console.log(data);
   await store.updateBasicInfo(id, data);
   await store.getChallengeById(id);
-  editBasicInfo.value = false;
-  store.form = {};
-};
-const onCancelBasicInfo = () => {
   editBasicInfo.value = false;
   store.form = {};
 };
@@ -57,286 +68,144 @@ const onApprove = () => {
     accept: async () => {
       await store.approveChallenge(id, { approve: true });
       await store.getChallengeById(id);
-      // toast.add({
-      //   severity: 'info',
-      //   summary: 'Confirmed',
-      //   detail: 'You have accepted',
-      //   life: 3000
-      // });
     },
     reject: () => {}
   });
 };
 
 const onUnApprove = () => {};
+
+const onUpdateTemplate = () => {};
+const onUpdateInvitation = async (data) => {
+  await store.updateInvitation(id, data);
+  await store.getChallengeById(id);
+};
+
+const onShowMessage = () => {
+  showSideBar.value = false;
+};
+
+const onHiddenMessage = () => {
+  showSideBar.value = true;
+};
 </script>
 <template>
   <base-view title="Detail Challenge">
+    <template #action-header>
+      <Button label="Show Message Box" @click="onShowMessage" v-if="!isSuperAdmin && showSideBar" />
+      <Button
+        label="Hidden Message Box"
+        @click="onHiddenMessage"
+        v-if="!isSuperAdmin && !showSideBar"
+      />
+    </template>
     <Toast />
     <ConfirmDialog></ConfirmDialog>
+    <Dialog v-model:visible="editBasicInfo" class="w-4/5" modal>
+      <step-one v-model="store.detailChallenge.information">
+        <template #action="{ data }">
+          <div class="flex justify-between items-center">
+            <Button label="Cancel" severity="secondary" @click="onCancelBasicInfo"></Button>
+            <Button label="Save" severity="warning" @click="onUpdateBasicInfo(data)"></Button>
+          </div>
+        </template>
+      </step-one>
+    </Dialog>
     <div class="flex space-x-6">
-      <div class="w-full space-y-6 min-h-full">
+      <div class="grow space-y-6 min-h-full">
         <div class="flex space-x-6" v-if="!isSuperAdmin">
           <div class="card flex-1 min-h-[100px] text-center text-lg font-medium">
-            <p class="text-slate-500">Feedback</p>
+            <p class="text-slate-500">Members</p>
             <p class="font-bold text-2xl">0</p>
           </div>
           <div class="card flex-1 text-center text-lg font-medium">
-            <p class="text-slate-500">member</p>
+            <p class="text-slate-500">Workout hours</p>
             <p class="font-bold text-2xl">0</p>
           </div>
           <div class="card flex-1 text-center text-lg font-medium">
-            <p class="text-slate-500">Hours</p>
+            <p class="text-slate-500">Feedbacks</p>
             <p class="font-bold text-2xl">0</p>
           </div>
-          <div class="card flex-1 text-center text-lg font-medium">
-            <p class="text-slate-500">Report</p>
-            <p class="font-bold text-2xl">0</p>
-          </div>
-
         </div>
-        <div class="card min-h-[800px]">
-          <TabView class="tabview-custom" :activeIndex="0">
+        <div class="card w-full min-h-[800px]">
+          <TabView :activeIndex="1">
             <TabPanel>
               <template #header>
                 <i class="pi pi-info-circle"></i>
-                <p class="ml-2">Basic Information</p>
+                <p class="ml-1">Basic Information</p>
               </template>
-              <div class="space-y-4">
-                <div class="flex justify-between items-center space-x-6">
-                  <div class="flex space-x-2 items-center">
-                    <i class="pi pi-tags" style="font-size: 1.25rem"></i>
-                    <Chip
-                      :label="tag.name"
-                      class="!text-sm"
-                      v-for="tag in store.detailChallenge.information.tags"
-                      :key="tag.id"
-                    ></Chip>
-                  </div>
-                  <div v-if="isSuperAdmin && store.detailChallenge.information.status == 'init'">
-                    <Button
-                      label="Unapprove"
-                      severity="secondary"
-                      text
-                      icon="pi pi-times"
-                      class="cursor-pointer"
-                      @click="onUnApprove"
-                    />
-                    <Button
-                      label="Approve"
-                      severity="warning"
-                      text
-                      icon="pi pi-check"
-                      class="cursor-pointer"
-                      @click="onApprove"
-                    />
-                  </div>
-                  <Button
-                    label="Edit"
-                    severity="warning"
-                    text
-                    icon="pi pi-pencil"
-                    @click="showEditBasicInfo"
-                    v-if="!isSuperAdmin"
-                  />
-
-                  <Dialog v-model:visible="editBasicInfo" class="w-4/5" modal>
-                    <step-one v-model="store.detailChallenge.information">
-                      <template #action="{ data }">
-                        <div class="flex justify-between items-center">
-                          <Button
-                            label="Cancel"
-                            severity="secondary"
-                            @click="onCancelBasicInfo"
-                          ></Button>
-                          <Button
-                            label="Save"
-                            severity="warning"
-                            @click="onUpdateBasicInfo(data)"
-                          ></Button>
-                        </div>
-                      </template>
-                    </step-one>
-                  </Dialog>
-                </div>
-                <div class="flex justify-between items-center">
-                  <h1 class="text-xl font-bold p-text-primary">
-                    {{ store.detailChallenge.information.name }}
-                  </h1>
-                </div>
-                <div class="flex justify-start items-center space-x-2">
-                  <i class="pi pi-clock"></i>
-                  <p>
-                    Start at:
-                    {{ new Date(store.detailChallenge.information.start_at).toDateString() }}
-                  </p>
-                  <i class="pi pi-arrow-right"></i>
-                  <p>
-                    Finish at:
-                    {{ new Date(store.detailChallenge.information.finish_at).toDateString() }}
-                  </p>
-                </div>
-
-                <div class="flex space-x-4">
-                  <div
-                    class="border rounded-md px-4 h-10 flex justify-center items-center border-blue-600 text-blue-600"
-                  >
-                    <p class="font-semibold mr-2">Level:</p>
-                    <p class="font-semibold">Easy</p>
-                  </div>
-                  <div
-                    class="border rounded-md px-4 h-10 flex justify-center items-center border-blue-600 text-blue-600"
-                  >
-                    <p class="font-semibold mr-2">Max Members:</p>
-                    <p class="font-semibold">{{ store.detailChallenge.information.max_members }}</p>
-                  </div>
-                  <div
-                    class="border rounded-md px-4 h-10 flex justify-center items-center border-blue-600 text-blue-600"
-                  >
-                    <p class="font-semibold mr-2">Status:</p>
-                    <p class="font-semibold">{{ store.detailChallenge.information.status }}</p>
-                  </div>
-                </div>
-                <div>
-                  <p>
-                    {{ store.detailChallenge.information.description }}
-                  </p>
-                </div>
-                <div class="grid grid-cols-3 grid-flow-row gap-4">
-                  <img
-                    v-for="img in store.detailChallenge.information.images"
-                    :src="img.url"
-                    alt="challenge image"
-                    srcset=""
-                    :key="img.path"
-                    class="object-cover h-40 w-full"
-                  />
-                </div>
-              </div>
+              <basic-info-panel
+                :information="store.detailChallenge.information"
+                :show-edit-button="!isSuperAdmin"
+                @approve="onApprove"
+                @un-approve="onUnApprove"
+                @show-edit-dialog="onShowEditDialog"
+              ></basic-info-panel>
             </TabPanel>
             <TabPanel>
               <template #header>
                 <i class="pi pi-th-large"></i>
-                <p class="ml-2">Template Plan</p>
+                <p class="ml-1">Template Plan</p>
               </template>
               <div class="flex gap-4 justify-end mb-4" v-if="editTemplate">
                 <Button label="Cancel" severity="secondary" @click="editTemplate = false" />
-                <Button label="Save" severity="warning" />
+                <Button label="Save" severity="warning" @click="onUpdateTemplate" />
               </div>
-              <template v-for="(phase, index) in store.detailChallenge.template" :key="phase.id">
-                <Panel header="Beginner (7 days)" :toggleable="index > 0">
-                  <template #header>
-                    <Inplace :closable="true">
-                      <template #display>
-                        {{
-                          phase.name
-                            ? `${phase.name} (${phase.total_days} days)`
-                            : `Phase ${index + 1} (${phase.total_days} days)`
-                        }}
-                      </template>
-                      <template #content>
-                        <InputText v-model="phase.name" />
-                      </template>
-                    </Inplace>
-                  </template>
-                  <template #icons>
-                    <Button
-                      icon="pi pi-pencil"
-                      label="Edit"
-                      severity="warning"
-                      text
-                      rounded
-                      aria-label="total-days"
-                      size="small"
-                      v-if="editTemplate === false && !isSuperAdmin"
-                      @click="editTemplate = true"
-                    />
-                    <template v-if="editTemplate">
-                      <Button
-                        icon="pi pi-calendar-plus"
-                        v-tooltip.top="'edit total days'"
-                        text
-                        rounded
-                        aria-label="total-days"
-                        size="small"
-                        @click="(event) => toggleTotalDays(event, index)"
-                      />
-                      <OverlayPanel ref="totalDaysPopup">
-                        <div class="p-inputgroup flex-1 mb-4">
-                          <InputNumber
-                            inputId="total-days"
-                            :min="1"
-                            :max="30"
-                            placeholder="add total days"
-                            :model-value="phase.total_days"
-                            @update:model-value="($event) => onUpdateSessions($event, phase)"
-                          />
-                          <span class="p-inputgroup-addon">days</span>
-                        </div>
-                      </OverlayPanel>
-                      <Button
-                        icon="pi pi-file-edit"
-                        v-tooltip.top="'add note or description'"
-                        text
-                        rounded
-                        aria-label="note"
-                        size="small"
-                      />
-                      <Button
-                        icon="pi pi-eraser"
-                        v-tooltip.top="'clear all sessions'"
-                        severity="warning"
-                        text
-                        rounded
-                        aria-label="clear"
-                        size="small"
-                        @click="onClearSession(phase)"
-                      />
-                      <Button
-                        icon="pi pi-trash"
-                        v-tooltip.top="'delete this phase'"
-                        severity="danger"
-                        text
-                        rounded
-                        aria-label="delete"
-                        size="small"
-                        @click="remove(index)"
-                      />
-                    </template>
-                  </template>
-                  <div class="flex flex-wrap gap-4 justify-evenly">
-                    <session-component
-                      :session-name="index + 1"
-                      v-model:description="phase.sessions[index].descriptions"
-                      v-model:exercises="phase.sessions[index].exercises"
-                      v-for="(session, index) in phase.sessions"
-                      :key="index"
-                      :edit="editTemplate"
-                    />
-                  </div>
-                </Panel>
-              </template>
+              <TemplatePanel
+                :show-edit-button="!isSuperAdmin"
+                v-model:edit-mode="editTemplate"
+                :template="store.detailChallenge.template"
+              ></TemplatePanel>
             </TabPanel>
             <TabPanel>
               <template #header>
                 <i class="pi pi-users"></i>
-                <p class="ml-2">Members</p>
+                <p class="ml-1">Members</p>
               </template>
-              <div></div>
+              <member-panel :members="store.detailChallenge.members"></member-panel>
+            </TabPanel>
+            <TabPanel>
+              <template #header>
+                <i class="pi pi-users"></i>
+                <p class="ml-1">Invitations</p>
+              </template>
+              <invitation-panel
+                :invitations="store.detailChallenge.invitation"
+                :members="store.detailChallenge.members"
+                :accept-all="store.detailChallenge.information.acceptAll"
+                @update="onUpdateInvitation"
+              ></invitation-panel>
             </TabPanel>
           </TabView>
         </div>
       </div>
-      <div class="card w-2/5 space-y-6 min-h-full" v-if="!isSuperAdmin">
+      <div
+        class="card space-y-6 custom-height"
+        v-if="!isSuperAdmin && !showSideBar"
+        :class="{ 'w-1/4': !showSideBar }"
+      >
         <TabView>
-          <TabPanel header="Feedback">
-            <p></p>
+          <TabPanel>
+            <template #header>
+              <div class="mr-2">Feedback</div>
+              <Badge :value="feedbackNonReply" severity="warning" v-if="feedbackNonReply"></Badge>
+            </template>
+            <feedback-box></feedback-box>
           </TabPanel>
-          <TabPanel header="Result Workout">
-            <p></p>
+          <TabPanel>
+            <template #header>
+              <div class="mr-2">Comment</div>
+              <Badge value="3" severity="warning"></Badge>
+            </template>
+            <comment-box></comment-box>
           </TabPanel>
         </TabView>
       </div>
     </div>
   </base-view>
 </template>
+<style scoped>
+.custom-height {
+  height: calc(100vh - 160px);
+}
+</style>

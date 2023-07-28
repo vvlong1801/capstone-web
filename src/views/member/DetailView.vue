@@ -1,16 +1,38 @@
 <script setup>
-import PracticeResult from './PracticeResult.vue'
-import PracticeTimePerDay from './PracticeTimePerDay.vue'
-import Stats from './Stats.vue'
+import BaseView from '@/views/BaseView.vue';
+import ColumnChart from './partials/ColumnChart.vue';
+import SessionResultTable from './partials/SessionResultTable.vue';
+import MemberProfile from './partials/MemberProfile.vue'
 </script>
 
-
 <template>
-  <div class="flex flex-col gap-y-4">
-    <practice-result />
-    
-    <practice-time-per-day />
+  <base-view title="Detail Member">
+    <div class="flex gap-6">
+      <div class="card w-1/3">
+        <member-profile>
 
-    <stats />
-  </div>
+        </member-profile>
+      </div>
+      <div class="w-2/3 space-y-6">
+        <div class="flex space-x-6">
+          <div class="card flex-1 min-h-[100px] text-center text-lg font-medium">
+            <p class="text-slate-500">Last workout day</p>
+            <p class="font-bold text-2xl">0</p>
+          </div>
+          <div class="card flex-1 text-center text-lg font-medium">
+            <p class="text-slate-500">Total workout days</p>
+            <p class="font-bold text-2xl">0</p>
+          </div>
+          <div class="card flex-1 text-center text-lg font-medium">
+            <p class="text-slate-500">Current Session</p>
+            <p class="font-bold text-2xl">0</p>
+          </div>
+        </div>
+
+        <column-chart></column-chart>
+
+        <session-result-table></session-result-table>
+      </div>
+    </div>
+  </base-view>
 </template>
