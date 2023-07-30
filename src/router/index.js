@@ -115,8 +115,8 @@ const router = createRouter({
 
         //==============session results================
         {
-          path: '/session-results',
-          name: 'session_results.index',
+          path: '/training',
+          name: 'training.index',
           component: () => import('@/views/member/IndexView.vue')
         },
 

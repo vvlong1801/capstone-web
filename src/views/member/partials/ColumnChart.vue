@@ -14,19 +14,19 @@ const setChartData = () => {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
         datasets: [
             {
-                label: 'My First dataset',
+                label: 'Calo',
                 backgroundColor: documentStyle.getPropertyValue('--blue-500'),
                 borderColor: documentStyle.getPropertyValue('--blue-500'),
-                data: [65, 59, 80, 81, 56, 55, 40]
+                data: [350, 400, 550, 700, 650, 800, 650]
             },
             {
-                label: 'My Second dataset',
+                label: 'Bpm',
                 backgroundColor: documentStyle.getPropertyValue('--pink-500'),
                 borderColor: documentStyle.getPropertyValue('--pink-500'),
-                data: [28, 48, 40, 19, 86, 27, 90]
+                data: [110, 105, 100, 95, 95, 100, 90]
             }
         ]
     };
