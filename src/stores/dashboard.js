@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-// import { useRouter } from 'vue-router';
 import { DashboardAPI } from '@/services';
 
 export const useDashboardStore = defineStore('dashboard', () => {

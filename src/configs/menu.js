@@ -53,9 +53,9 @@ export const appMenu = [
         role: ['creator']
       },
       {
-        label: 'Session Result',
+        label: 'Training',
         icon: 'pi pi-fw pi-ticket',
-        to: '/session-results',
+        to: '/training',
         role: ['creator']
       }
     ]

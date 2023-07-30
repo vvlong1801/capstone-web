@@ -1,7 +1,7 @@
 <script setup>
 import Image from 'primevue/image';
 import Avatar from 'primevue/avatar';
-import ImageSrc from '@/assets/images/banner.jpg';
+import ImageSrc from '@/assets/images/avatar.jpg';
 import { ref } from 'vue';
 
 const profile = ref({

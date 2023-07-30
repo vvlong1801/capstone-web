@@ -17,15 +17,15 @@ import MemberProfile from './partials/MemberProfile.vue'
         <div class="flex space-x-6">
           <div class="card flex-1 min-h-[100px] text-center text-lg font-medium">
             <p class="text-slate-500">Last workout day</p>
-            <p class="font-bold text-2xl">0</p>
+            <p class="font-bold text-2xl">18/07/2023</p>
           </div>
           <div class="card flex-1 text-center text-lg font-medium">
             <p class="text-slate-500">Total workout days</p>
-            <p class="font-bold text-2xl">0</p>
+            <p class="font-bold text-2xl">8</p>
           </div>
           <div class="card flex-1 text-center text-lg font-medium">
             <p class="text-slate-500">Current Session</p>
-            <p class="font-bold text-2xl">0</p>
+            <p class="font-bold text-2xl">8</p>
           </div>
         </div>
 
