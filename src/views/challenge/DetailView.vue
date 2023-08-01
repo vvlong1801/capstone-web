@@ -116,15 +116,15 @@ const onHiddenMessage = () => {
         <div class="flex space-x-6" v-if="!isSuperAdmin">
           <div class="card flex-1 min-h-[100px] text-center text-lg font-medium">
             <p class="text-slate-500">Members</p>
-            <p class="font-bold text-2xl">0</p>
+            <p class="font-bold text-2xl">{{ store.detailChallenge?.members?.length }}</p>
           </div>
           <div class="card flex-1 text-center text-lg font-medium">
             <p class="text-slate-500">Workout hours</p>
             <p class="font-bold text-2xl">0</p>
           </div>
           <div class="card flex-1 text-center text-lg font-medium">
-            <p class="text-slate-500">Feedbacks</p>
-            <p class="font-bold text-2xl">0</p>
+            <p class="text-slate-500">Comments</p>
+            <p class="font-bold text-2xl">{{ store.detailChallenge.information?.comments?.length }}</p>
           </div>
         </div>
         <div class="card w-full min-h-[800px]">

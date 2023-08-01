@@ -1,10 +1,8 @@
 <script setup>
 import Rating from 'primevue/rating';
-import { ref } from 'vue';
 import { useChallengeStore } from '@/stores/challenge';
 
 const { deleteChallenge } = useChallengeStore();
-const rate = ref(0);
 defineProps(['challenge']);
 </script>
 <template>
@@ -16,20 +14,20 @@ defineProps(['challenge']);
       class="w-full h-[200px] object-cover"
     />
     <div class="p-4 space-y-2">
-      <div class="flex space-x-4 justify-start items-center">
-        <h1 class="text-xl font-bold p-text-primary">{{ challenge.name }}</h1>
+      <div class="flex space-x-4 justify-between items-center">
+        <h1 class="text-xl font-bold p-text-primary truncate">{{ challenge.name }}</h1>
         <!-- <i class="pi pi-lock !text-red-600"></i> -->
         <Tag :value="challenge.status" class="!text-xs"></Tag>
       </div>
 
       <div class="flex justify-between">
         <div class="flex space-x-2">
-          <Rating v-model="rate" readonly :cancel="false" class="!text-yellow-500" />
-          <p class="text-lg">(0)</p>
+          <Rating :model-value="challenge.rate" readonly :cancel="false" class="!text-yellow-500" />
+          <p class="text-lg">{{ `(${challenge.num_rate})` }}</p>
         </div>
         <div class="flex space-x-2 text-lg justify-start items-center">
           <i class="pi pi-users" style="font-size: 1.25rem" />
-          <p>0</p>
+          <p>{{ challenge.members_count }}</p>
         </div>
       </div>
       <div class="flex space-x-2 justify-start items-center">
