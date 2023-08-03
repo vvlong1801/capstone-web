@@ -148,7 +148,7 @@ const onCloseMessage = () => {
       <Dropdown v-model="selectingRole" :options="roles" placeholder="Select Role" class="w-1/4" />
       <Button icon="pi pi-plus" rounded aria-label="Add" @click="onAddToDatabase" />
     </div>
-    <DataTable :value="datatableAfterSearch" paginator :rows="10" dataKey="id">
+    <DataTable :value="datatableAfterSearch" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" dataKey="id">
       <template #header>
         <div class="flex justify-content-end">
           <span class="p-input-icon-left">
