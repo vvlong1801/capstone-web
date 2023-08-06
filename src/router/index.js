@@ -117,7 +117,13 @@ const router = createRouter({
         {
           path: '/training',
           name: 'training.index',
-          component: () => import('@/views/member/IndexView.vue')
+          component: () => import('@/views/training/IndexView.vue')
+        },
+
+        {
+          path: '/media',
+          name: 'media.index',
+          component: () => import('@/views/training/IndexView.vue')
         },
 
         //==============workout-users================
@@ -155,11 +161,21 @@ const router = createRouter({
           component: () => import('@/views/profile/IndexView.vue')
         },
 
-        //==============profile================
+        //==============source================
         {
-          path: '/tags',
-          name: 'tags.index',
-          component: () => import('@/views/tags/IndexView.vue')
+          path: '/sources/certificate-issuers',
+          name: 'sources.certificate.index',
+          component: () => import('@/views/source/certificates/IndexView.vue')
+        },
+        {
+          path: '/sources/goals',
+          name: 'sources.goals.index',
+          component: () => import('@/views/source/goals/IndexView.vue')
+        },
+        {
+          path: '/sources/tags',
+          name: 'sources.tags.index',
+          component: () => import('@/views/source/tags/IndexView.vue')
         },
       ]
     },

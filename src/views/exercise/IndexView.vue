@@ -1,21 +1,26 @@
 <script setup>
 import BaseView from '../BaseView.vue';
 import ExerciseCard from './partials/ExerciseCard.vue';
-
-import { onMounted, ref, computed } from 'vue';
-import { useExerciseStore } from '@/stores/exercise';
+import FilterBox from './partials/FilterBox.vue';
+import { onMounted, ref, watch } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
+import { useExerciseStore } from '@/stores/exercise';
+import { useAuthStore } from "@/stores/auth/auth";
 
+const {userInfo, isAdmin} = useAuthStore();
 const store = useExerciseStore();
 const confirm = useConfirm();
 const searchText = ref('');
+const filterBoxVisible = ref(false);
+const filteredExercise = ref([]);
 
-const exercises = computed(() => {
-  return store.exercises?.filter((exe) => exe.name.includes(searchText.value));
+watch(searchText, () => {
+  filteredExercise.value = store.exercises?.filter((exe) => exe.name.includes(searchText.value));
 });
 
-onMounted(() => {
-  store.getExercises();
+onMounted(async () => {
+  await store.getExercises();
+  filteredExercise.value = store.exercises;
 });
 
 const confirmDelete = (id) => {
@@ -27,14 +32,29 @@ const confirmDelete = (id) => {
   });
 };
 
-const showFilter = () => {
-  console.log('filter');
+const showFilterBox = () => {
+  filterBoxVisible.value = !filterBoxVisible.value;
 };
+
+const onFilter = (data) => {
+  filteredExercise.value = data;
+};
+
+const showActionExe = (createdById) =>{
+  return userInfo.id == createdById || isAdmin ;
+} 
+
 </script>
 <template>
   <Toast />
   <ConfirmDialog></ConfirmDialog>
   <base-view title="Exercises">
+    <filter-box
+      :visible="filterBoxVisible"
+      :data="store.exercises"
+      @update:data="onFilter"
+    ></filter-box>
+
     <div class="card flex flex-col space-y-6 min-h-full">
       <Toolbar>
         <template #start>
@@ -44,9 +64,9 @@ const showFilter = () => {
             @click="$router.push({ name: 'exercise.create' })"
           />
           <Button
-            icon="pi pi-filter"
+            :icon="`pi ${filterBoxVisible ? 'pi-filter-slash' : 'pi-filter'}`"
             class="p-button-rounded p-button-secondary !border-none"
-            @click="showFilter"
+            @click="showFilterBox"
           />
         </template>
         <template #end>
@@ -60,11 +80,11 @@ const showFilter = () => {
       </Toolbar>
       <div class="grid grid-cols-3 gap-6">
         <exercise-card
-          v-for="exe in exercises"
+          v-for="exe in filteredExercise"
           :exercise="exe"
           :key="exe.id"
           @click-delete="confirmDelete"
-          :show-action="true"
+          :show-action="showActionExe(exe.created_by.id)"
         />
       </div>
     </div>

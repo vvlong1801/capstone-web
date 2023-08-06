@@ -127,6 +127,7 @@ const pieCreatorsData = computed(() => {
           :title="challenge.name"
           :image="challenge.main_image"
           :members_count="challenge.members_count"
+          :rate="challenge.rate"
           :key="challenge.id"
         ></top-card>
       </div>
@@ -144,6 +145,7 @@ const pieCreatorsData = computed(() => {
           :title="item.creator.name"
           :members_count="item.total_members"
           :key="item.creator.id"
+          :rate="item.rate"
         ></top-card>
       </div>
       <div class="flex-1" v-if="!showSideBar">

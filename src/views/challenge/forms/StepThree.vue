@@ -80,6 +80,10 @@ const onDelete = (index) => {
 const onSubmit = () => {
   challengeStore.createChallenge();
 };
+
+watch(acceptAll, () => {
+  challengeStore.form.accept_all = acceptAll.value;
+})
 </script>
 <template>
   <div class="flex flex-col gap-8">

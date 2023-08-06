@@ -11,9 +11,9 @@ const showExpand = ref(false);
       <img :src="exercise.image.url" alt="abc" class="w-20 h-20 object-cover rounded-md" />
       <div class="content w-full py-1 flex flex-col justify-between">
         <div class="flex justify-between items-center">
-          <p class="font-bold text-lg">{{ exercise.name }}</p>
+          <p class="font-semibold text-base grow max-w-[75%] break-words">{{ exercise.name }}</p>
           <slot name="action" v-if="showAction">
-            <div class="space-x-2">
+            <div class="space-x-2 w-1/4 flex justify-end">
               <i
                 class="pi pi-pencil cursor-pointer"
                 @click="
@@ -29,12 +29,12 @@ const showExpand = ref(false);
             </div>
           </slot>
         </div>
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center max-w-full">
           <div class="flex items-center justify-between w-full">
             <slot name="info">
               <Tag :severity="exercise.level?.severity" :value="exercise.level?.label" />
               <p class="font-normal text-sm text-gray-500">
-                {{ exercise.created_by }}
+                {{ exercise.created_by.name }}
               </p>
             </slot>
           </div>
@@ -50,3 +50,8 @@ const showExpand = ref(false);
     <slot name="expand" v-if="showExpand"> <div class="min-h-[40px]"></div></slot>
   </div>
 </template>
+<style scoped>
+.content-width {
+  width: calc(100% - 8rem);
+}
+</style>

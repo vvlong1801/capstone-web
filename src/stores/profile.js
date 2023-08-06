@@ -16,8 +16,9 @@ export const useProfileStore = defineStore('profile', () => {
       const res = await ProfileAPI.onGetProfile();
       form.value = res.data;
       form.value.techniques = form.value.techniques.map((te) => te.id);
-      form.value.certificate_issuer = form.value.certificate_issuer.id;
+      // form.value.certificate_issuer = form.value.certificate_issuer?.id;
       authStore.userInfo = form.value.user;
+      authStore.creatorInfo = { is_PT: form.value.verified_pt, rate: form.value.rate };
     } catch (error) {
       console.log(error);
     }

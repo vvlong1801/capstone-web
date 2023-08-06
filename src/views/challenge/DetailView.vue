@@ -26,9 +26,11 @@ const route = useRoute();
 const store = useChallengeStore();
 const confirm = useConfirm();
 
-const { isSuperAdmin } = useAuthStore();
+const { isSuperAdmin, userInfo } = useAuthStore();
 
 const editTemplate = ref(false);
+const reasonsUnApprove = ref('');
+
 const id = route.params.id;
 
 const feedbackNonReply = computed(() => {
@@ -66,14 +68,25 @@ const onApprove = () => {
     header: 'Confirmation',
     icon: 'pi pi-exclamation-triangle',
     accept: async () => {
-      await store.approveChallenge(id, { approve: true });
+      await store.confirmChallenge(id, { approve: true });
       await store.getChallengeById(id);
     },
     reject: () => {}
   });
 };
 
-const onUnApprove = () => {};
+const onUnApprove = () => {
+  confirm.require({
+    group: 'unApprove',
+    header: 'UnApprove',
+    icon: 'pi pi-exclamation-triangle',
+    accept: async () => {
+      await store.confirmChallenge(id, { approve: false, reasons: reasonsUnApprove.value });
+      await store.getChallengeById(id);
+    },
+    reject: () => {}
+  });
+};
 
 const onUpdateTemplate = () => {};
 const onUpdateInvitation = async (data) => {
@@ -88,6 +101,13 @@ const onShowMessage = () => {
 const onHiddenMessage = () => {
   showSideBar.value = true;
 };
+
+const hasEditPermission = () => {
+  return (
+    store.detailChallenge?.information?.created_by?.id === userInfo.id &&
+    store.detailChallenge.information.status == 'active'
+  );
+};
 </script>
 <template>
   <base-view title="Detail Challenge">
@@ -101,6 +121,14 @@ const onHiddenMessage = () => {
     </template>
     <Toast />
     <ConfirmDialog></ConfirmDialog>
+    <ConfirmDialog group="unApprove">
+      <template #message>
+        <span class="p-float-label !w-[500px]">
+          <Textarea v-model="reasonsUnApprove" autoResize rows="5" class="w-full" />
+          <label>Reasons</label>
+        </span>
+      </template>
+    </ConfirmDialog>
     <Dialog v-model:visible="editBasicInfo" class="w-4/5" modal>
       <step-one v-model="store.detailChallenge.information">
         <template #action="{ data }">
@@ -124,11 +152,13 @@ const onHiddenMessage = () => {
           </div>
           <div class="card flex-1 text-center text-lg font-medium">
             <p class="text-slate-500">Comments</p>
-            <p class="font-bold text-2xl">{{ store.detailChallenge.information?.comments?.length }}</p>
+            <p class="font-bold text-2xl">
+              {{ store.detailChallenge.information?.comments?.length }}
+            </p>
           </div>
         </div>
         <div class="card w-full min-h-[800px]">
-          <TabView :activeIndex="1">
+          <TabView :activeIndex="0">
             <TabPanel>
               <template #header>
                 <i class="pi pi-info-circle"></i>
@@ -136,7 +166,7 @@ const onHiddenMessage = () => {
               </template>
               <basic-info-panel
                 :information="store.detailChallenge.information"
-                :show-edit-button="!isSuperAdmin"
+                :show-edit-button="hasEditPermission()"
                 @approve="onApprove"
                 @un-approve="onUnApprove"
                 @show-edit-dialog="onShowEditDialog"
@@ -152,7 +182,7 @@ const onHiddenMessage = () => {
                 <Button label="Save" severity="warning" @click="onUpdateTemplate" />
               </div>
               <TemplatePanel
-                :show-edit-button="!isSuperAdmin"
+                :show-edit-button="false"
                 v-model:edit-mode="editTemplate"
                 :template="store.detailChallenge.template"
               ></TemplatePanel>
@@ -174,6 +204,7 @@ const onHiddenMessage = () => {
                 :members="store.detailChallenge.members"
                 :accept-all="store.detailChallenge.information.acceptAll"
                 @update="onUpdateInvitation"
+                :can-add-invite="hasEditPermission()"
               ></invitation-panel>
             </TabPanel>
           </TabView>
@@ -195,7 +226,11 @@ const onHiddenMessage = () => {
           <TabPanel>
             <template #header>
               <div class="mr-2">Comment</div>
-              <Badge value="3" severity="warning"></Badge>
+              <Badge
+                :value="store.comments.length"
+                severity="warning"
+                v-if="store.comments.length > 0"
+              ></Badge>
             </template>
             <comment-box></comment-box>
           </TabPanel>

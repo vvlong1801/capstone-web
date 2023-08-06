@@ -21,7 +21,7 @@ const items = ref([
 <template>
   <base-view title="Create Challenge">
     <div class="card">
-      <Steps :model="items" aria-label="Form Steps" />
+      <Steps :model="items" aria-label="Form Steps"/>
     </div>
     <div class="card mt-8">
       <router-view></router-view>

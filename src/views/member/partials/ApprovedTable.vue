@@ -168,7 +168,8 @@ const levelOptions = ref(['beginner', 'intermediate', 'advanced']);
             />
           </template>
         </Column>
-        <Column field="status" header=" Status" style="min-width: 150px" :showFilterMenu="false">
+        <Column field="created_at" header="Join at" style="min-width: 150px" sortable :showFilterMenu="false"></Column>
+        <!-- <Column field="status" header=" Status" style="min-width: 150px" :showFilterMenu="false">
           <template #body="{ data }">
             <div class="flex space-x-4">
               <Tag :severity="getSeverityStatus(data.status)" :value="data.status" rounded />
@@ -189,7 +190,7 @@ const levelOptions = ref(['beginner', 'intermediate', 'advanced']);
               </template>
             </Dropdown>
           </template>
-        </Column>
+        </Column> -->
         <Column>
           <template #body="{ data }">
             <div class="flex space-x-4">

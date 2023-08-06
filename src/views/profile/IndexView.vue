@@ -38,7 +38,7 @@ const validationSchema = Yup.object({
     name: Yup.string().required(),
     email: Yup.string().required(),
     avatar: Yup.object().required(),
-    phone_number: Yup.string().required()
+    phone_number: Yup.string().required("phone number is a required field")
   }),
   age: Yup.number().required(),
   youtube: Yup.string(),
@@ -51,7 +51,6 @@ const validationSchema = Yup.object({
   desired_salary: Yup.number().required(),
   introduce: Yup.string().required(),
   gender: Yup.string(),
-  zalo: Yup.string()
 });
 const profileForm = ref({});
 
@@ -63,8 +62,9 @@ onMounted(async () => {
   await store.getProfile();
   await store.getIssuers();
   await store.getTechniques();
-  profileForm.value.setValues(store.form);
+  profileForm.value.setValues(store.form, false);
 });
+
 
 const workTypeOptions = ['GYM', 'freelancer', 'all'];
 
@@ -165,7 +165,7 @@ const onRemoveWorkoutMedia = (index) => {
                 mode="basic"
                 auto
                 :multiple="true"
-                :maxFileSize="1000000"
+                :maxFileSize="10000000"
                 @uploader="handleUploadAvatar"
                 custom-upload
                 accept="image/*"
@@ -340,6 +340,13 @@ const onRemoveWorkoutMedia = (index) => {
             v-slot="{ value, handleChange, errorMessage }"
           >
             <div class="p-float-label">
+              <InputText
+                id="issuer"
+                :model-value="value?.name"
+                class="w-full"
+                :readonly="authStore.creatorInfo.is_PT"
+                v-if="authStore.creatorInfo.is_PT"
+              />
               <Dropdown
                 :model-value="value"
                 @update:model-value="handleChange"
@@ -348,6 +355,7 @@ const onRemoveWorkoutMedia = (index) => {
                 optionValue="id"
                 placeholder="Select a certificate issuer"
                 class="w-full md:w-14rem"
+                v-else
               />
               <label for="issuer">Certificate Issuer</label>
             </div>
@@ -355,12 +363,20 @@ const onRemoveWorkoutMedia = (index) => {
           </VeeField>
           <VeeField as="div" name="work_type" v-slot="{ field, handleChange, errorMessage }">
             <div class="p-float-label">
+              <InputText
+                id="issuer"
+                :model-value="field.value"
+                class="w-full"
+                :readonly="authStore.creatorInfo.is_PT"
+                v-if="authStore.creatorInfo.is_PT"
+              />
               <Dropdown
                 :model-value="field.value"
                 @update:model-value="handleChange"
                 :options="workTypeOptions"
                 placeholder="Select work type"
                 class="w-full md:w-14rem"
+                v-else
               />
               <label for="work_type">Type Work</label>
             </div>
@@ -373,6 +389,7 @@ const onRemoveWorkoutMedia = (index) => {
                   type="text"
                   :model-value="field.value"
                   @update:model-value="handleChange"
+                  :readonly="authStore.creatorInfo.is_PT"
                 />
                 <label for="desired_salary">Desired Salary</label>
               </div>
@@ -399,6 +416,7 @@ const onRemoveWorkoutMedia = (index) => {
                 placeholder="Select technique"
                 :maxSelectedLabels="10"
                 class="w-full md:w-20rem"
+                :readonly="authStore.creatorInfo.is_PT"
               />
               <label for="techniques">Technique</label>
             </div>
@@ -416,46 +434,51 @@ const onRemoveWorkoutMedia = (index) => {
                 :model-value="field.value"
                 @update:model-value="handleChange"
                 class="w-full"
+                :readonly="authStore.creatorInfo.is_PT"
               />
               <label for="address">Home Address</label>
             </div>
             <span class="text-sm text-red-500">{{ errorMessage }}</span>
           </VeeField>
-          <VeeField as="div" name="youtube" v-slot="{ field, handleChange, errorMessage }">
-            <div class="p-inputgroup">
-              <span class="p-inputgroup-addon">
-                <i class="pi pi-youtube"></i>
-              </span>
-              <div class="p-float-label">
-                <InputText
-                  id="youtube"
-                  class="!w-full"
-                  :model-value="field.value"
-                  @update:model-value="handleChange"
-                />
-                <label for="youtube">Youtube</label>
+          <div class="col-span-3 flex gap-6">
+            <VeeField as="div" name="youtube" class="flex-1" v-slot="{ field, handleChange, errorMessage }">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-youtube"></i>
+                </span>
+                <div class="p-float-label">
+                  <InputText
+                    id="youtube"
+                    class="!w-full"
+                    :model-value="field.value"
+                    @update:model-value="handleChange"
+                    :readonly="authStore.creatorInfo.is_PT"
+                  />
+                  <label for="youtube">Youtube</label>
+                </div>
               </div>
-            </div>
-            <span class="text-sm text-red-500">{{ errorMessage }}</span>
-          </VeeField>
-          <VeeField as="div" name="facebook" v-slot="{ field, handleChange, errorMessage }">
-            <div class="p-inputgroup">
-              <span class="p-inputgroup-addon">
-                <i class="pi pi-facebook"></i>
-              </span>
-              <div class="p-float-label">
-                <InputText
-                  id="facebook"
-                  class="!w-full"
-                  :model-value="field.value"
-                  @update:model-value="handleChange"
-                />
-                <label for="facebook">Facebook</label>
+              <span class="text-sm text-red-500">{{ errorMessage }}</span>
+            </VeeField>
+            <VeeField as="div" name="facebook" class="flex-1" v-slot="{ field, handleChange, errorMessage }">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-facebook"></i>
+                </span>
+                <div class="p-float-label">
+                  <InputText
+                    id="facebook"
+                    class="!w-full"
+                    :model-value="field.value"
+                    @update:model-value="handleChange"
+                    :readonly="authStore.creatorInfo.is_PT"
+                  />
+                  <label for="facebook">Facebook</label>
+                </div>
               </div>
-            </div>
-            <span class="text-sm text-red-500">{{ errorMessage }}</span>
-          </VeeField>
-          <VeeField as="div" name="zalo" v-slot="{ field, handleChange, errorMessage }">
+              <span class="text-sm text-red-500">{{ errorMessage }}</span>
+            </VeeField>
+          </div>
+          <!-- <VeeField as="div" name="zalo" v-slot="{ field, handleChange, errorMessage }">
             <div class="p-inputgroup">
               <span class="p-inputgroup-addon">
                 <p>Zalo</p>
@@ -471,7 +494,7 @@ const onRemoveWorkoutMedia = (index) => {
               </div>
             </div>
             <span class="text-sm text-red-500">{{ errorMessage }}</span>
-          </VeeField>
+          </VeeField> -->
           <VeeField
             as="div"
             name="introduce"
@@ -481,9 +504,11 @@ const onRemoveWorkoutMedia = (index) => {
             <div class="p-float-label">
               <Textarea
                 id="intro"
+                autoResize
                 :model-value="field.value"
                 @update:model-value="handleChange"
                 class="w-full h-full"
+                :readonly="authStore.creatorInfo.is_PT"
               />
               <label for="intro">Introduction</label>
             </div>
