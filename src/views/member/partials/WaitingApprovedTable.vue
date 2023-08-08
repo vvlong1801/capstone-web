@@ -9,15 +9,16 @@ import { ref } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 
 defineProps(['data']);
+const emits = defineEmits(["approve"]);
 const confirm = useConfirm();
 
-const onConfirmApprove = (event) => {
+const onConfirmApprove = (event, memberId) => {
   confirm.require({
     target: event.currentTarget,
     message: 'Are you sure you want to approve this member?',
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
-        console.log("approve");
+        emits("approve", memberId);
     },
     reject: () => {
       console.log("unapprove");
@@ -160,7 +161,7 @@ const levelOptions = ref(['beginner', 'intermediate', 'advanced']);
         </template>
       </Column>
       <Column>
-        <template #body="{ }">
+        <template #body="{data }">
           <div class="flex space-x-4">
             <Button
               label="Approve"
@@ -169,7 +170,7 @@ const levelOptions = ref(['beginner', 'intermediate', 'advanced']);
               iconPos="right"
               outlined
               severity="success"
-              @click="onConfirmApprove($event)"
+              @click="onConfirmApprove($event, data.id)"
             />
           </div>
         </template>

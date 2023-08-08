@@ -2,8 +2,11 @@ export const onGetExercises = async () => {
   return await window.axios.get('exercises');
 };
 
+// export const onGetGroupTags = async () => {
+//   return await window.axios.get('exercises/group_tags');
+// };
 export const onGetGroupTags = async () => {
-  return await window.axios.get('exercises/group_tags');
+  return await window.axios.get('tags/exercises');
 };
 
 export const onGetExercisesWithPagination = async (pageNum = 1) => {

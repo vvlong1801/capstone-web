@@ -7,8 +7,7 @@ import Avatar from 'primevue/avatar';
 import AutoComplete from 'primevue/autocomplete';
 import { ref, computed, watch, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { useAuthStore } from '@/stores/auth/auth';
-const { isSuperAdmin } = useAuthStore();
+
 const props = defineProps({
   invitations: {
     default: []
@@ -18,6 +17,9 @@ const props = defineProps({
   },
   members: {
     default: []
+  },
+  canAddInvite: {
+    default: false
   }
 });
 
@@ -111,14 +113,14 @@ const onCloseMessage = () => {
 <template>
   <div class="flex flex-col gap-8">
     <Message severity="error" v-if="addError" @close="onCloseMessage">{{ messageError }}</Message>
-    <div class="flex justify-between">
+    <div class="flex justify-between" v-if="canAddInvite">
       <div class="flex items-center">
         <InputSwitch v-model="acceptAllRef" />
         <p class="ml-4 font-semibold">Accept All</p>
       </div>
       <Button icon="pi pi-check" label="Save" severity="warning" @click="onSave"></Button>
     </div>
-    <div class="flex space-x-6 w-full" v-if="!isSuperAdmin">
+    <div class="flex space-x-6 w-full" v-if="canAddInvite">
       <AutoComplete
         v-model="globalSearchKey"
         :suggestions="globalSearchOptions"
@@ -148,7 +150,13 @@ const onCloseMessage = () => {
       <Dropdown v-model="selectingRole" :options="roles" placeholder="Select Role" class="w-1/4" />
       <Button icon="pi pi-plus" rounded aria-label="Add" @click="onAddToDatabase" />
     </div>
-    <DataTable :value="datatableAfterSearch" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" dataKey="id">
+    <DataTable
+      :value="datatableAfterSearch"
+      paginator
+      :rows="5"
+      :rowsPerPageOptions="[5, 10, 20, 50]"
+      dataKey="id"
+    >
       <template #header>
         <div class="flex justify-content-end">
           <span class="p-input-icon-left">

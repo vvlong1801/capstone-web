@@ -82,7 +82,7 @@ const genderOptions = ref(['male', 'female']);
     </Column>
     <Column field="join_at" header="Join at" sortable> </Column>
     <Column>
-      <template #body="{ index }">
+      <template #body="{ index, data }">
         <div class="flex space-x-4">
           <Button
             label="Detail"
@@ -90,7 +90,7 @@ const genderOptions = ref(['male', 'female']);
             icon="pi pi-angle-right"
             iconPos="right"
             outlined
-            @click="$router.push({ name: 'member.show', params: { id: index } })"
+            @click="$router.push({ name: 'member.show', params: { id: data.challenge_member_id } })"
           />
         </div>
       </template>

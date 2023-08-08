@@ -1,9 +1,22 @@
 <script setup>
 import Rating from 'primevue/rating';
-import { useChallengeStore } from '@/stores/challenge';
-
-const { deleteChallenge } = useChallengeStore();
 defineProps(['challenge']);
+defineEmits(['delete']);
+
+const getSeverityStatus = (status) => {
+  switch (status) {
+    case 'init':
+      return 'warning';
+    case 'active':
+      return 'primary';
+    case 'disapprove':
+      return 'danger';
+    case 'cancel':
+      return 'danger';
+    default:
+      return 'info';
+  }
+};
 </script>
 <template>
   <div class="relative h-fit border p-outline-primary rounded-md min-h-[500px] overflow-hidden">
@@ -17,7 +30,11 @@ defineProps(['challenge']);
       <div class="flex space-x-4 justify-between items-center">
         <h1 class="text-xl font-bold p-text-primary truncate">{{ challenge.name }}</h1>
         <!-- <i class="pi pi-lock !text-red-600"></i> -->
-        <Tag :value="challenge.status" class="!text-xs"></Tag>
+        <Tag
+          :value="challenge.status"
+          class="!text-xs"
+          :severity="getSeverityStatus(challenge.status)"
+        ></Tag>
       </div>
 
       <div class="flex justify-between">
@@ -47,7 +64,7 @@ defineProps(['challenge']);
               text
               size="small"
               aria-label="actions"
-              @click="deleteChallenge(challenge.id)"
+              @click.stop="$emit('delete', challenge.id)"
             />
             <!-- <Button
               icon="pi pi-share-alt"

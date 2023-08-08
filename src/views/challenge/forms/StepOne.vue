@@ -86,7 +86,7 @@ const searchChallengeTag = (event) => {
     } else {
       console.log(stepOne.value.getValues());
       let filtered = store.challengeTags.filter((tag) => {
-        return tag.name.toLowerCase().startsWith(event.query.toLowerCase());
+        return tag.name.toLowerCase().includes(event.query.toLowerCase());
       });
       if (filtered.length) {
         filteredChallengeTags.value = [...filtered];
@@ -280,6 +280,7 @@ const onSubmit = (values) => {
           <span class="p-float-label">
             <Textarea
               rows="5"
+              autoResize 
               :model-value="value"
               @update:model-value="handleChange"
               class="!w-full"

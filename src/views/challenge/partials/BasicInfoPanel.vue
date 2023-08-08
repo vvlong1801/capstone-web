@@ -80,9 +80,8 @@ defineEmits(['approve', 'unApprove']);
           <p class="font-normal">{{ information.for_gender }}</p>
         </div>
         <div class="col-span-2 border rounded-md px-4 py-2 max-h-fit">
-          <p>
-            {{ information.description }}
-          </p>
+          <div v-html="information.description?.replace(/\n/g,'<br>')">
+          </div>
         </div>
       </div>
       <div class="flex-1 w-full">

@@ -85,25 +85,25 @@ export const appMenu = [
       {
         label: 'Tags',
         icon: 'pi pi-fw pi-clone',
-        to: '/tags',
+        to: '/sources/tags',
         role: ['admin', 'superAdmin']
       },
       {
         label: 'Certificate Issuers',
         icon: 'pi pi-fw pi-clone',
-        to: '/muscles',
+        to: '/sources/certificate-issuers',
         role: ['admin', 'superAdmin']
       },
       {
         label: 'Goals',
         icon: 'pi pi-fw pi-clone',
-        to: '/muscles',
+        to: '/sources/goals',
         role: ['admin', 'superAdmin']
       },
       {
         label: 'Media',
         icon: 'pi pi-fw pi-images',
-        to: '/muscles',
+        to: '/media',
         role: ['creator']
       }
     ]

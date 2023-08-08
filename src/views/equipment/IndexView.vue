@@ -5,12 +5,12 @@ import FormEquipment from './FormDialog.vue';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useEquipmentStore } from '@/stores/equipment';
 
+const store = useEquipmentStore();
 const searchKey = ref('');
 const visibleModal = ref(false);
 const showAction = ref(null);
 const modalType = ref('create');
 
-const store = useEquipmentStore();
 
 onMounted(store.getEquipments);
 watch(visibleModal, (newValue) => {

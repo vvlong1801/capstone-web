@@ -71,9 +71,42 @@ const onClearSession = (phase) => ((phase.sessions = []), (phase.total_days = 0)
 const onRemovePhase = (index) => {
   stepTwoData.phases.splice(index, 1);
 };
+
 const onNext = () => {
   console.log('next');
+  calcLevel();
   router.push({ name: 'challenges.create.step_three' });
+};
+
+const calcLevel = () => {
+  const levels = store.form.template.phases.flatMap((phase) =>
+    phase.sessions.flatMap((session) =>
+      session.exercises.flatMap((exercise) => exercise.level.value)
+    )
+  );
+  const levelValues = levels.map((level) => {
+    switch (level) {
+      case 'easy':
+        return 1;
+      case 'middle':
+        return 2;
+      case 'hard':
+        return 3;
+
+      default:
+        return 0;
+    }
+  });
+  const levelValue =
+    levelValues.reduce((accumulator, currentValue) => accumulator + currentValue) /
+    levelValues.length;
+  if (levelValue <= 1.5) {
+    store.form.level = 'easy';
+  } else if (levelValue <= 2.5) {
+    store.form.level = 'middle';
+  } else {
+    store.form.level = 'hard';
+  }
 };
 </script>
 <template>

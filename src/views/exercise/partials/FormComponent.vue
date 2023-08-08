@@ -21,7 +21,7 @@ const exerciseStore = useExerciseStore();
 const muscleStore = useMuscleStore();
 const equipmentStore = useEquipmentStore();
 
-const typeDescOpts = ['free', 'step'];
+// const typeDescOpts = ['free', 'step'];
 const typeDesc = ref('free');
 
 const filteredGroupTags = ref([]);
@@ -47,7 +47,7 @@ const searchGroupTag = (event) => {
       filteredGroupTags.value = [...exerciseStore.groupTags];
     } else {
       let filtered = exerciseStore.groupTags.filter((tag) => {
-        return tag.name.toLowerCase().startsWith(event.query.toLowerCase());
+        return tag.name.toLowerCase().includes(event.query.toLowerCase());
       });
       if (filtered.length) {
         filteredGroupTags.value = [...filtered];
@@ -248,7 +248,9 @@ const searchGroupTag = (event) => {
           />
           <label for="group" class="truncate max-w-full pr-8"> Select group </label>
         </div>
-
+        <small class="p-error" id="text-error" v-if="checkValidate('group_tags')">
+          {{ exerciseStore.form.errors.group_tags || '&nbsp;' }}
+        </small>
         <div class="col-span-2">
           <FileUpload
             name="gif"
@@ -337,18 +339,19 @@ const searchGroupTag = (event) => {
         </div>
       </div>
       <div class="flex flex-col w-1/2 gap-6">
-        <SelectButton
+        <!-- <SelectButton
           v-model="typeDesc"
           :options="typeDescOpts"
           aria-labelledby="basic"
           class="grid grid-cols-2"
-        />
+        /> -->
         <span class="p-float-label" v-if="typeDesc == 'free'">
           <Textarea
             :model-value="exerciseStore.form.values.description"
             @update:model-value="(value) => exerciseStore.form.setFieldValue('description', value)"
-            rows="54"
+            rows="32"
             class="w-full"
+            autoResize
             inputId="description"
           />
           <label for="description">Description</label>

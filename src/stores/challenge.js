@@ -107,9 +107,9 @@ export const useChallengeStore = defineStore('challenge', () => {
     }
   };
 
-  const approveChallenge = async (id, data) => {
+  const confirmChallenge = async (id, data) => {
     try {
-      const res = await ChallengeAPI.onApproveChallenge(id, data);
+      const res = await ChallengeAPI.onConfirmChallenge(id, data);
       if (res?.status === 204 || res?.status === 200) {
         toast.add({ severity: 'success', summary: 'success', detail: res?.message, life: 3000 });
         setTimeout(() => {
@@ -174,7 +174,7 @@ export const useChallengeStore = defineStore('challenge', () => {
     getChallenges,
     createChallenge,
     updateBasicInfo,
-    approveChallenge,
+    confirmChallenge,
     updateInvitation,
     deleteChallenge,
     replyFeedback,

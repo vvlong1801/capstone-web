@@ -40,14 +40,14 @@ const onSignOut = async () => {
     </button>
 
     <div class="ml-auto p-0 flex items-center">
-      <AutoComplete
+      <!-- <AutoComplete
         v-model="globalSearchValue"
         :suggestions="suggestionItems"
         @complete="search"
         class="mr-3 min-w-[300px]"
         input-class="w-full"
         placeholder="Enter search ..."
-      />
+      /> -->
 
       <Button
         icon="pi pi-bell"
@@ -74,7 +74,7 @@ const onSignOut = async () => {
             <router-link to="/" class="flex items-center">
               <span><i class="pi pi-file-edit text-xl text-primary-500"></i></span>
               <div class="ml-3">
-                <span class="mb-2 font-semibold">Creator A created new challenge</span>
+                <span class="mb-2 font-semibold">Creator created new challenge</span>
                 <p class="font-sans">4 min ago</p>
               </div>
             </router-link>
@@ -83,8 +83,8 @@ const onSignOut = async () => {
             <router-link to="/" class="flex items-center">
               <span><i class="pi pi-file-edit text-xl text-primary-500"></i></span>
               <div class="ml-3">
-                <span class="mb-2 font-semibold">Creator A created new challenge</span>
-                <p class="font-sans">4 min ago</p>
+                <span class="mb-2 font-semibold">Long sended a feedback</span>
+                <p class="font-sans">2 week ago</p>
               </div>
             </router-link>
           </li>
@@ -92,8 +92,8 @@ const onSignOut = async () => {
             <router-link to="/" class="flex items-center">
               <span><i class="pi pi-file-edit text-xl text-primary-500"></i></span>
               <div class="ml-3">
-                <span class="mb-2 font-semibold">Creator A created new challenge</span>
-                <p class="font-sans">4 min ago</p>
+                <span class="mb-2 font-semibold">Nam sended a feedback</span>
+                <p class="font-sans">2 week ago</p>
               </div>
             </router-link>
           </li>

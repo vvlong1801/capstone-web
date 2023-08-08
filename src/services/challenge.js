@@ -3,7 +3,7 @@ export const onGetChallenges = async () => {
 };
 
 export const onGetChallengeTags = async () => {
-  return await window.axios.get('challenges/tags');
+  return await window.axios.get('tags/challenges');
 };
 
 export const onGetFeedbacks = async (challengeId) => {
@@ -34,7 +34,7 @@ export const onUpdateInvitation = async (id, data) => {
   return await window.axios.put(`challenges/${id}/invitation`, data);
 };
 
-export const onApproveChallenge = async (id, data) => {
+export const onConfirmChallenge = async (id, data) => {
   return await window.axios.put(`challenges/${id}/confirm`, data);
 };
 

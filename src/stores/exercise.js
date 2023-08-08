@@ -23,7 +23,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     for_gender: Yup.string().required(),
     requirement_unit: Yup.string().required(),
     requirement_initial: Yup.string().required(),
-    group_tags: Yup.array(),
+    group_tags: Yup.array().min(1).required(),
     muscles: Yup.array().required(),
     image: Yup.object().required(),
     gif: Yup.object().required(),
