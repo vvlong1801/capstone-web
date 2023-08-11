@@ -255,7 +255,7 @@ const searchGroupTag = (event) => {
           <FileUpload
             name="gif"
             accept="image/*"
-            :maxFileSize="3000000"
+            :maxFileSize="10000000"
             @uploader="onUpload($event, 'gif')"
             auto
             custom-upload
@@ -287,7 +287,7 @@ const searchGroupTag = (event) => {
           <FileUpload
             name="image"
             accept="image/*"
-            :maxFileSize="1000000"
+            :maxFileSize="10000000"
             @uploader="onUpload($event, 'image')"
             auto
             custom-upload

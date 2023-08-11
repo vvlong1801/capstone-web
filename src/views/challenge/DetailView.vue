@@ -112,11 +112,11 @@ const hasEditPermission = () => {
 <template>
   <base-view title="Detail Challenge">
     <template #action-header>
-      <Button label="Show Message Box" @click="onShowMessage" v-if="!isSuperAdmin && showSideBar" />
+      <Button label="Show Message Box" @click="onShowMessage" v-if="showSideBar" />
       <Button
         label="Hidden Message Box"
         @click="onHiddenMessage"
-        v-if="!isSuperAdmin && !showSideBar"
+        v-if="!showSideBar"
       />
     </template>
     <Toast />
@@ -212,7 +212,7 @@ const hasEditPermission = () => {
       </div>
       <div
         class="card space-y-6 custom-height"
-        v-if="!isSuperAdmin && !showSideBar"
+        v-if="!showSideBar"
         :class="{ 'w-1/4': !showSideBar }"
       >
         <TabView>

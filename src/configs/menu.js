@@ -50,7 +50,7 @@ export const appMenu = [
         label: 'Members',
         icon: 'pi pi-fw pi-users',
         to: '/members',
-        role: ['creator']
+        role: ['creator', "superAdmin"]
       },
       {
         label: 'Training',

@@ -40,6 +40,9 @@ window.Echo = new Echo({
   cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
   forceTLS: true,
   bearerToken: accessToken.value,
-  authEndpoint: 'http://192.168.1.232:8000/api/broadcasting/auth'
+  // authEndpoint: 'http://192.168.1.232:8000/api/broadcasting/auth'
+  // authEndpoint: 'http://54.255.135.59/api/broadcasting/auth'
+  authEndpoint: 'http://localhost:8000/api/broadcasting/auth'
+  // authEndpoint: 'http://192.168.1.218:8000/api/broadcasting/auth'
 });
 console.log(window.Echo);
