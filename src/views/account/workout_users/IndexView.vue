@@ -6,31 +6,11 @@ import Avatar from 'primevue/avatar';
 import { FilterMatchMode } from 'primevue/api';
 
 import { ref, onMounted } from 'vue';
-// import { ProductService } from '@/service/ProductService';
-const creators = ref([
-  {
-    id: 1,
-    name: 'long 1',
-    email: 'long@gmail.com',
-    gender: 'male',
-    level: 'beginner',
-    challenges: 3,
-    completedChallenges: 1,
-    workoutDays: 5,
-    status: 'active'
-  },
-  {
-    id: 2,
-    name: 'long 2',
-    email: 'long2@gmail.com',
-    gender: 'female',
-    level: 'intermediate',
-    challenges: 3,
-    completedChallenges: 1,
-    workoutDays: 5,
-    status: 'active'
-  }
-]);
+import { useWorkoutUserStore } from '@/stores/workoutUser';
+
+const store = useWorkoutUserStore();
+
+onMounted(async () => await store.getWorkoutUsers());
 
 const getSeverityLevel = (level) => {
   switch (level) {
@@ -45,28 +25,15 @@ const getSeverityLevel = (level) => {
   }
 };
 
-const getSeverityStatus = (status) => {
-  switch (status) {
-    case 'active':
-      return 'success';
-    case 'block':
-      return 'danger';
-
-    default:
-      break;
-  }
-};
-
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  status: { value: null, matchMode: FilterMatchMode.EQUALS },
   gender: { value: null, matchMode: FilterMatchMode.EQUALS },
   level: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const genderOptions = ref(['male', 'female']);
-const statuses = ref(['active', 'block']);
 const levelOptions = ref(['beginner', 'intermediate', 'advanced']);
+const onCreate = () => {};
 </script>
 <template>
   <base-view title="List Workout Users">
@@ -89,12 +56,14 @@ const levelOptions = ref(['beginner', 'intermediate', 'advanced']);
       </Toolbar>
       <DataTable
         v-model:filters="filters"
-        :value="creators"
+        :value="store.workoutUsers"
         tableStyle="min-width: 50rem"
         stripedRows
+        paginator
+        :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]"
         scrollable
         filterDisplay="row"
-        :globalFilterFields="['name', 'gender', 'level', 'status']"
+        :globalFilterFields="['name', 'gender', 'level']"
       >
         <Column field="id" header="ID" style="min-width: 40px"></Column>
         <Column
@@ -166,41 +135,11 @@ const levelOptions = ref(['beginner', 'intermediate', 'advanced']);
             </Dropdown>
           </template>
         </Column>
-        <Column field="challenges" header=" Challenges" sortable style="min-width: 150px"></Column>
-        <Column
-          field="completedChallenges"
-          header="Completed"
-          sortable
-          style="min-width: 150px"
-        ></Column>
-        <Column
-          field="workoutDays"
-          header="Workout Days"
-          sortable
-          style="min-width: 150px"
-        ></Column>
-        <Column field="status" header=" Status" style="min-width: 150px" :showFilterMenu="false">
-          <template #body="{ data }">
-            <div class="flex space-x-4">
-              <Tag :severity="getSeverityStatus(data.status)" :value="data.status" rounded />
-            </div>
-          </template>
-          <template #filter="{ filterModel, filterCallback }">
-            <Dropdown
-              v-model="filterModel.value"
-              @change="filterCallback()"
-              :options="statuses"
-              placeholder="Select One"
-              class="p-column-filter"
-              style="min-width: 6rem"
-              :showClear="true"
-            >
-              <template #option="slotProps">
-                <Tag :value="slotProps.option" :severity="getSeverityStatus(slotProps.option)" />
-              </template>
-            </Dropdown>
-          </template>
-        </Column>
+        <Column field="email" header="Email" sortable style="min-width: 150px"></Column>
+        <Column field="age" header="Age" sortable style="min-width: 150px"></Column>
+        <Column field="height" header="Height" sortable style="min-width: 150px"></Column>
+        <Column field="weight" header="Weight" sortable style="min-width: 150px"></Column>
+        <Column field="bmi" header="BMI" sortable style="min-width: 150px"></Column>
         <Column>
           <template #body="{ index }">
             <div class="flex space-x-4">
